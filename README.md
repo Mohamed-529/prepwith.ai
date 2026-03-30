@@ -16,4 +16,4 @@ An AI-based interview preparation platform.
 https://prepwithai-one.vercel.app/
 
 ## GitHub Repo
-(link)
+https://github.com/Mohamed-529/prepwith.ai
