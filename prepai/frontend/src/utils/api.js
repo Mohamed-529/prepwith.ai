@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:"https://prepai-project.onrender.com",
+  baseURL: "https://prepai-project.onrender.com",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -16,11 +16,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const registerUser  = (data) => api.post("/auth/register", data);
-export const loginUser     = (data) => api.post("/auth/login", data);
-export const getMe         = ()     => api.get("/auth/me");
-export const getQuestions  = ()     => api.get("/questions");
-export const submitAnswers = (data) => api.post("/submit", data);
-export const getProgress   = ()     => api.get("/progress");
+export const registerUser  = (data) => api.post("/api/auth/register", data);
+export const loginUser     = (data) => api.post("/api/auth/login", data);
+export const getMe         = ()     => api.get("/api/auth/me");
+export const getQuestions  = ()     => api.get("/api/questions");
+export const submitAnswers = (data) => api.post("/api/submit", data);
+export const getProgress   = ()     => api.get("/api/progress");
 
 export default api;
