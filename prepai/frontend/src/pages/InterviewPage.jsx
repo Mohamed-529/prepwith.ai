@@ -40,24 +40,16 @@ const InterviewPage = () => {
   const [timeLeft, setTimeLeft]       = useState(QUESTION_TIME);
   const [loadingQ, setLoadingQ]       = useState(true);
   const [submitting, setSubmitting]   = useState(false);
-  const [error, setError]             = useState("");
+  const [loadError, setLoadError]     = useState("");
+  const [submitError, setSubmitError] = useState("");
   const [started, setStarted]         = useState(false);
   const timerRef = useRef(null);
+  const answersRef = useRef(answers);
+  const submittingRef = useRef(false);
+  const expireHandledRef = useRef(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchQs = async () => {
-      try {
-        const { data } = await getQuestions();
-        setQuestions(data.questions || []);
-      } catch (err) {
-        setError("Failed to load questions. Please refresh.");
-      } finally {
-        setLoadingQ(false);
-      }
-    };
-    fetchQs();
-  }, []);
+  answersRef.current = answers;
 
   useEffect(() => {
     const fetchQs = async () => {
@@ -65,71 +57,70 @@ const InterviewPage = () => {
         const { data } = await getQuestions();
         setQuestions(data.questions || []);
       } catch (err) {
-        setError("Failed to load questions. Please refresh.");
+        setLoadError("Failed to load questions. Please refresh.");
       } finally {
         setLoadingQ(false);
       }
     };
     fetchQs();
   }, []);
+
+  const handleSubmit = useCallback(async () => {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    clearInterval(timerRef.current);
+    setSubmitting(true);
+    try {
+      const payload = questions.map((q) => ({
+        questionId: q.id,
+        questionText: q.question,
+        userAnswer: answersRef.current[q.id] || "",
+      }));
+      const { data } = await submitAnswers({ answers: payload });
+      navigate("/results", { state: { result: data } });
+    } catch (err) {
+      submittingRef.current = false;
+      setSubmitError(err.response?.data?.message || "Failed to submit. Please try again.");
+      setSubmitting(false);
+    }
+  }, [questions, navigate]);
 
   const goNext = useCallback(() => {
     clearInterval(timerRef.current);
     if (currentIdx < questions.length - 1) {
       setCurrentIdx((i) => i + 1);
       setTimeLeft(QUESTION_TIME);
+    } else {
+      handleSubmit();
     }
-  }, [currentIdx, questions.length]);
+  }, [currentIdx, questions.length, handleSubmit]);
 
-  // Timer
+  // Countdown timer — side effects run after tick, not inside setState
   useEffect(() => {
-    if (!started || loadingQ || questions.length === 0) return;
+    if (!started || loadingQ || questions.length === 0 || submitting) return;
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-  clearInterval(timerRef.current);
-
-  if (currentIdx < questions.length - 1) {
-    setCurrentIdx((i) => i + 1);
-    setTimeLeft(QUESTION_TIME);
-  } else {
-    handleSubmit(); 
-  }
-
-  return 0;
-}
-        return t - 1;
-      });
+      setTimeLeft((t) => (t <= 1 ? 0 : t - 1));
     }, 1000);
     return () => clearInterval(timerRef.current);
-  }, [started, currentIdx, loadingQ, questions.length]);
+  }, [started, currentIdx, loadingQ, questions.length, submitting]);
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      expireHandledRef.current = false;
+      return;
+    }
+    if (!started || submitting || expireHandledRef.current) return;
+    expireHandledRef.current = true;
+    goNext();
+  }, [timeLeft, started, submitting, goNext]);
 
   const handleAnswerChange = (questionId, value) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
-  const handleSubmit = async () => {
-    clearInterval(timerRef.current);
-    setSubmitting(true);
-    localStorage.removeItem("answers");
-    try {
-      const payload = questions.map((q) => ({
-        questionId: q.id,
-        questionText: q.question,
-        userAnswer: answers[q.id] || "",
-      }));
-      const { data } = await submitAnswers({ answers: payload });
-      navigate("/results", { state: { result: data } });
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to submit. Please try again.");
-      setSubmitting(false);
-    }
-  };
-
   const currentQ = questions[currentIdx];
-  const answeredCount = Object.values(answers).filter((a) => a.trim()).length;
-  const isAllAnswered = answeredCount === questions.length;
+  const answeredCount = Object.values(answers).filter((a) => a && a.trim()).length;
 
   if (loadingQ) {
     return (
@@ -142,11 +133,11 @@ const InterviewPage = () => {
     );
   }
 
-  if (error) {
+  if (loadError || questions.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="card text-center max-w-md">
-          <p className="text-red-400 mb-4">{error}</p>
+          <p className="text-red-400 mb-4">{loadError || "No questions available. Please refresh."}</p>
           <button onClick={() => window.location.reload()} className="btn-primary">Retry</button>
         </div>
       </div>
@@ -196,7 +187,7 @@ const InterviewPage = () => {
         <div className="h-2 bg-dark-600 rounded-full overflow-hidden">
           <div
             className="h-full bg-brand-600 rounded-full transition-all duration-500"
-            style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
+            style={{ width: `${questions.length ? ((currentIdx + 1) / questions.length) * 100 : 0}%` }}
           />
         </div>
         {/* Question dots */}
@@ -247,6 +238,12 @@ const InterviewPage = () => {
         </p>
       </div>
 
+      {submitError && (
+        <div className="mb-4 px-4 py-3 rounded-xl bg-red-900/30 border border-red-700/50 text-red-400 text-sm">
+          {submitError}
+        </div>
+      )}
+
       {/* Navigation */}
       <div className="flex items-center justify-between gap-4">
         <button
@@ -264,10 +261,10 @@ const InterviewPage = () => {
             </button>
           ) : (
             <button
-  onClick={handleSubmit}
-  disabled={submitting || !isAllAnswered}
-  className="btn-primary bg-emerald-600 hover:bg-emerald-500 focus:ring-emerald-400 disabled:opacity-50"
->
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="btn-primary bg-emerald-600 hover:bg-emerald-500 focus:ring-emerald-400 disabled:opacity-50"
+            >
               {submitting ? (
                 <span className="flex items-center gap-2">
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
