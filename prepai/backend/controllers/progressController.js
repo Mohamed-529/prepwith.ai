@@ -91,7 +91,7 @@ const submitAnswers = async (req, res) => {
     const progress = await Progress.create({
       userId: req.user._id,
       score,
-      totalQuestions: answers.length,
+      totalQuestions: evaluatedAnswers.length,
       answers: evaluatedAnswers,
       date: new Date(),
     });
@@ -99,8 +99,8 @@ const submitAnswers = async (req, res) => {
     res.status(200).json({
       success: true,
       score,
-      totalQuestions: answers.length,
-      percentage: Math.round((score / answers.length) * 100),
+      totalQuestions: evaluatedAnswers.length,
+      percentage: Math.round((score / evaluatedAnswers.length) * 100),
       answers: evaluatedAnswers,
       progressId: progress._id,
     });
@@ -115,30 +115,24 @@ const submitAnswers = async (req, res) => {
 // @access  Private
 const getProgress = async (req, res) => {
   try {
-    const progressHistory = await Progress.find({ userId: req.user._id })
-      .sort({ date: -1 })
-      .limit(10);
+    const [progressHistory, allSessions] = await Promise.all([
+      Progress.find({ userId: req.user._id }).sort({ date: -1 }).limit(10),
+      Progress.find({ userId: req.user._id }).select("score totalQuestions"),
+    ]);
+
+    const percentages = allSessions
+      .filter((p) => p.totalQuestions > 0)
+      .map((p) => Math.round((p.score / p.totalQuestions) * 100));
 
     const stats = {
-      totalSessions: progressHistory.length,
+      totalSessions: allSessions.length,
       averageScore:
-        progressHistory.length > 0
+        percentages.length > 0
           ? Math.round(
-              progressHistory.reduce(
-                (acc, p) =>
-                  acc + Math.round((p.score / p.totalQuestions) * 100),
-                0
-              ) / progressHistory.length
+              percentages.reduce((acc, pct) => acc + pct, 0) / percentages.length
             )
           : 0,
-      bestScore:
-        progressHistory.length > 0
-          ? Math.max(
-              ...progressHistory.map((p) =>
-                Math.round((p.score / p.totalQuestions) * 100)
-              )
-            )
-          : 0,
+      bestScore: percentages.length > 0 ? Math.max(...percentages) : 0,
     };
 
     res.status(200).json({
