@@ -25,8 +25,8 @@ const AppRoutes = () => {
         <Route path="*"          element={
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
-              <h1 className="text-6xl font-bold text-brand-400 mb-4">404</h1>
-              <p className="text-gray-400 mb-6">Page not found.</p>
+              <h1 className="text-6xl font-bold text-brand-600 mb-4">404</h1>
+              <p className="text-slate-500 mb-6">Page not found.</p>
               <a href="/" className="btn-primary inline-block">Go Home</a>
             </div>
           </div>

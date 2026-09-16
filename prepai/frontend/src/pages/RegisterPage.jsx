@@ -36,20 +36,20 @@ const RegisterPage = () => {
       <div className="w-full max-w-md animate-slide-up">
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shadow-lg shadow-brand-900/50">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-teal-700 flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
               </svg>
             </div>
-            <span className="font-display font-bold text-2xl text-white">Prep<span className="text-brand-400">AI</span></span>
+            <span className="font-display font-bold text-2xl text-slate-800">Prep<span className="text-brand-600">AI</span></span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Start for free</h1>
-          <p className="text-gray-400">Create your account and ace your next interview</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Start for free</h1>
+          <p className="text-slate-500">Create your account and ace your next interview</p>
         </div>
 
-        <div className="card shadow-xl shadow-black/30">
+        <div className="card shadow-xl shadow-mist-400/20">
           {error && (
-            <div className="mb-5 px-4 py-3 rounded-xl bg-red-900/30 border border-red-700/50 text-red-400 text-sm flex items-center gap-2">
+            <div className="mb-5 px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2">
               <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
               {error}
             </div>
@@ -65,7 +65,7 @@ const RegisterPage = () => {
               <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className="input-field" autoComplete="email" />
             </div>
             <div>
-              <label className="label">Password <span className="text-gray-500 font-normal">(min. 6 chars)</span></label>
+              <label className="label">Password <span className="text-slate-400 font-normal">(min. 6 chars)</span></label>
               <input type="password" name="password" value={form.password} onChange={handleChange} placeholder="••••••••" className="input-field" autoComplete="new-password" />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
@@ -81,9 +81,9 @@ const RegisterPage = () => {
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-400 mt-6">
+          <p className="text-center text-sm text-slate-500 mt-6">
             Already have an account?{" "}
-            <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium">Sign in</Link>
+            <Link to="/login" className="text-brand-600 hover:text-brand-700 font-medium">Sign in</Link>
           </p>
         </div>
       </div>
