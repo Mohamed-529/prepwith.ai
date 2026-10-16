@@ -1,4 +1,4 @@
-const { z } = require("zod");
+const { z, ZodError } = require("../utils/safeZod");
 const AppError = require("../utils/AppError");
 
 const validateRequest = (schema) => {
@@ -15,8 +15,8 @@ const validateRequest = (schema) => {
       }
       next();
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errorMessages = error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join("; ");
+      if (error instanceof ZodError || error.name === "ZodError" || (error && Array.isArray(error.errors))) {
+        const errorMessages = error.errors.map((e) => `${(e.path || []).join(".")}: ${e.message}`).join("; ");
         return next(new AppError(`Validation Error: ${errorMessages}`, 400));
       }
       next(error);

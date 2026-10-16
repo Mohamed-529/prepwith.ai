@@ -1,5 +1,5 @@
 const express = require("express");
-const { z } = require("zod");
+const { z } = require("../utils/safeZod");
 const router = express.Router();
 const { getQuestions, evaluateAnswer } = require("../controllers/questionsController");
 const { protect } = require("../middleware/authMiddleware");
