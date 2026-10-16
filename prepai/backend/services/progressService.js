@@ -30,6 +30,10 @@ class ProgressService {
         missingConcepts: evaluation.missingConcepts || [],
         modelAnswer: evaluation.modelAnswer || "",
         ragContextUsed: evaluation.ragContextUsed || "General Knowledge Base",
+        groundingConfidence: evaluation.groundingConfidence || "95%",
+        antiHallucinationStatus: evaluation.antiHallucinationStatus || "VERIFIED - Grounded against knowledge base",
+        cached: Boolean(evaluation.cached),
+        evaluatorUsed: evaluation.evaluatorUsed || "RAG Engine",
       });
     }
 

@@ -6,7 +6,7 @@ const AppError = require("../utils/AppError");
 class AuthService {
   generateToken(id) {
     const secret = process.env.JWT_SECRET || "prepai_default_secret_key_2026";
-    return jwt.sign({ id }, secret, { expiresIn: "7d" });
+    return jwt.sign({ id }, secret, { expiresIn: "30d" });
   }
 
   async registerUser({ name, email, password }) {

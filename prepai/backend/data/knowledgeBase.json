@@ -1,108 +1,214 @@
 {
   "topics": [
     {
+      "id": "js-var-let-const",
+      "category": "JavaScript",
+      "keywords": ["var", "let", "const", "scope", "hoisting", "temporal dead zone", "reassignment", "block scope", "function scope"],
+      "verifiedDefinition": "In JavaScript, 'var' is function-scoped and hoisted with an initial value of undefined, allowing re-declaration and reassignment. 'let' and 'const' are block-scoped, hoisted to the top of their enclosing block without initialization (residing in the Temporal Dead Zone until declared), and cannot be re-declared in the same scope. 'let' allows reassignment, while 'const' identifiers cannot be reassigned (though mutable object properties can still change).",
+      "keyConcepts": [
+        "Function scope vs Block scope",
+        "Hoisting differences and initializations",
+        "Temporal Dead Zone (TDZ) for let and const",
+        "Re-declaration vs Reassignment capabilities",
+        "Object/Array mutability with const"
+      ],
+      "antiHallucinationCheck": "Must distinguish block vs function scope and not claim const creates deeply immutable data structures."
+    },
+    {
+      "id": "react-hooks",
+      "category": "React",
+      "keywords": ["hook", "hooks", "useState", "useEffect", "functional component", "class component", "lifecycle", "stateful logic"],
+      "verifiedDefinition": "React Hooks (introduced in React 16.8) are functions that let functional components use state, lifecycle methods, and other React features without writing class components. They solve code reuse across components (custom hooks replace render props and HOCs) and prevent complex lifecycle duplication, adhering to the Rules of Hooks (only call at top level, only call from React functions).",
+      "keyConcepts": [
+        "State and lifecycle access inside functional components",
+        "Elimination of class components and 'this' binding complexity",
+        "Stateful logic extraction and reuse via Custom Hooks",
+        "Rules of Hooks: Top-level invocation and React function caller restriction",
+        "Primary built-in hooks: useState, useEffect, useContext, useMemo, useCallback"
+      ],
+      "antiHallucinationCheck": "Must identify that hooks enable functional components to have state and eliminate class lifecycle boilerplate."
+    },
+    {
       "id": "react-virtual-dom",
       "category": "React",
-      "keywords": ["virtual dom", "reconciliation", "diffing", "react", "jsx", "fiber"],
-      "verifiedDefinition": "The Virtual DOM is an in-memory lightweight representation of the real DOM. React uses a reconciliation algorithm (Fiber) to compare the current Virtual DOM tree with a new one when state or props change (diffing), calculating the minimum set of DOM operations needed to update the browser UI efficiently.",
+      "keywords": ["virtual dom", "reconciliation", "diffing", "react", "jsx", "fiber", "real dom", "batching"],
+      "verifiedDefinition": "The Virtual DOM is an in-memory lightweight JavaScript tree representation of the real DOM. When state or props change, React creates a new Virtual DOM tree and executes a heuristic diffing algorithm (O(n) complexity) via the Fiber reconciliation engine to compute minimal real DOM mutations, batching updates to prevent expensive layout recalibration and repaints.",
       "keyConcepts": [
-        "In-memory representation of DOM",
-        "Diffing algorithm (O(n) heuristic)",
-        "Reconciliation process",
-        "Fiber architecture for incremental rendering",
-        "Batching DOM updates for performance"
-      ]
+        "In-memory representation of DOM tree nodes",
+        "Heuristic diffing algorithm (O(n) complexity)",
+        "Reconciliation process comparing previous and next trees",
+        "Fiber architecture for interruptible and prioritized rendering",
+        "Batched DOM updates minimizing browser layout thrashing"
+      ],
+      "antiHallucinationCheck": "Must articulate that Virtual DOM is an in-memory abstraction and uses diffing to minimize real DOM mutations."
     },
     {
       "id": "js-closures",
       "category": "JavaScript",
-      "keywords": ["closure", "lexical scope", "scope chain", "outer function", "encapsulation"],
-      "verifiedDefinition": "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In JavaScript, closures give inner functions access to an outer function's scope even after the outer function has returned.",
+      "keywords": ["closure", "lexical scope", "scope chain", "outer function", "encapsulation", "private variable"],
+      "verifiedDefinition": "A closure is the combination of a function bundled together with references to its surrounding lexical environment. In JavaScript, closures grant inner functions persistent access to an enclosing outer function's scope variables, even after the outer function has executed and returned.",
       "keyConcepts": [
-        "Lexical scoping",
-        "Access to outer scope variables",
-        "Memory persistence of outer variables",
-        "Private variables & data encapsulation",
-        "Common use cases (event handlers, factory functions, currying)"
-      ]
+        "Lexical scoping and scope chain hierarchy",
+        "Inner function access to outer function variables",
+        "Memory persistence of closed-over lexical environment",
+        "Data privacy and encapsulation (module pattern)",
+        "Use cases: partial application, currying, event handlers, and memoization"
+      ],
+      "antiHallucinationCheck": "Must state that inner functions retain access to outer function scope after the outer function finishes executing."
     },
     {
       "id": "js-event-loop",
       "category": "JavaScript",
-      "keywords": ["event loop", "call stack", "task queue", "microtask queue", "promises", "async"],
-      "verifiedDefinition": "The JavaScript Event Loop is a single-threaded concurrency mechanism that manages the execution of synchronous code on the call stack and async callbacks from the Task Queue (Macrotasks like setTimeout) and Microtask Queue (Promises, process.nextTick). Microtasks are always processed to completion before the next macrotask.",
+      "keywords": ["event loop", "call stack", "task queue", "microtask queue", "promises", "macrotasks", "libuv", "single-threaded"],
+      "verifiedDefinition": "The JavaScript Event Loop is a single-threaded concurrency model that coordinates execution of synchronous code on the Call Stack and asynchronous callbacks from the Task Queue. When the Call Stack clears, the Event Loop first drains all callbacks in the Microtask Queue (Promises, queueMicrotask, process.nextTick) before executing the next Macrotask (setTimeout, setInterval, I/O events).",
       "keyConcepts": [
-        "Single-threaded execution model",
-        "Call Stack execution",
-        "Web APIs / Node C++ APIs background threads",
-        "Microtask Queue priority over Macrotask Queue",
-        "Non-blocking I/O paradigm"
-      ]
+        "Single-threaded execution with non-blocking I/O",
+        "Call Stack execution lifecycle",
+        "Microtask Queue (Promise reactions, nextTick) priority over Macrotask Queue",
+        "Macrotask Queue (setTimeout, I/O, UI rendering)",
+        "Role of Libuv in Node.js background thread pooling"
+      ],
+      "antiHallucinationCheck": "Must mention Microtask priority over Macrotasks and explain non-blocking concurrency."
+    },
+    {
+      "id": "js-promises-async-await",
+      "category": "JavaScript",
+      "keywords": ["promise", "async", "await", "resolve", "reject", "then", "catch", "finally", "asynchronous"],
+      "verifiedDefinition": "A Promise in JavaScript is an object representing the eventual completion (fulfillment) or failure (rejection) of an asynchronous operation, with three mutually exclusive states: pending, fulfilled, and rejected. 'async/await' is syntactic sugar built on top of Promises and Generators that allows asynchronous code to be written and read like synchronous code, using try/catch blocks for error handling.",
+      "keyConcepts": [
+        "Promise states: Pending, Fulfilled, Rejected",
+        "Promise chaining and avoid callback hell",
+        "async/await as non-blocking syntactic sugar over Promises",
+        "Error handling via try/catch and .catch()",
+        "Promise concurrency methods: Promise.all, Promise.allSettled, Promise.race"
+      ],
+      "antiHallucinationCheck": "Must accurately identify async/await as syntactic sugar over promises and detail the three promise states."
+    },
+    {
+      "id": "node-event-loop-backend",
+      "category": "Node.js",
+      "keywords": ["event loop", "node", "libuv", "non-blocking", "thread pool", "phases", "timers", "poll"],
+      "verifiedDefinition": "In Node.js, the event loop is powered by the C-based Libuv library. It operates across discrete phases: Timers (setTimeout/setInterval), Pending Callbacks (I/O errors), Idle/Prepare, Poll (retrieving new I/O events), Check (setImmediate callbacks), and Close Callbacks. Long compute operations should never block the event loop; CPU-intensive tasks are offloaded to Libuv thread pool or Worker Threads.",
+      "keyConcepts": [
+        "Libuv event loop phases (Timers, Poll, Check, Close)",
+        "setImmediate vs process.nextTick priority order",
+        "Offloading expensive I/O to system kernel or thread pool",
+        "Avoid blocking the single main event thread",
+        "Worker threads and clustering for CPU workloads"
+      ],
+      "antiHallucinationCheck": "Must recognize Libuv phases or non-blocking I/O principles without confusing Node with multi-threaded runtimes."
     },
     {
       "id": "node-event-emitter",
       "category": "Node.js",
-      "keywords": ["event emitter", "events", "pub sub", "observer pattern", "node"],
-      "verifiedDefinition": "Node.js EventEmitter is a core module implementing the Observer pattern. It allows objects to emit named events that cause registered listener functions to be called synchronously in the order they were registered.",
+      "keywords": ["event emitter", "events", "pub sub", "observer pattern", "node", "listeners"],
+      "verifiedDefinition": "Node.js EventEmitter is a core module implementing the Observer pattern. It allows objects to emit named events that trigger registered listener functions synchronously in the sequence they were attached. Used widely in streams, HTTP servers, and sockets.",
       "keyConcepts": [
-        "Observer design pattern",
-        "Synchronous execution of listeners",
-        "Asynchronous event handling via process.nextTick or setImmediate",
-        "Memory leak handling (maxListeners limit)",
-        "Error event handling"
-      ]
+        "Observer design pattern implementation",
+        "Synchronous execution order of event listeners",
+        "Handling error events to prevent process crashes",
+        "Memory leak safeguards (setMaxListeners / removeListener)",
+        "Decoupled publish-subscribe communication"
+      ],
+      "antiHallucinationCheck": "Must describe observer/pub-sub pattern and synchronous invocation of listeners."
+    },
+    {
+      "id": "database-sql-vs-nosql",
+      "category": "Database",
+      "keywords": ["sql", "nosql", "relational", "schema", "acid", "document", "scalable", "horizontal scaling", "vertical scaling", "mongodb", "postgres"],
+      "verifiedDefinition": "SQL databases are relational data stores with rigid tabular schemas, ACID (Atomicity, Consistency, Isolation, Durability) transaction guarantees, and support complex joins, typically scaled vertically. NoSQL databases (document, key-value, column, graph) feature dynamic or schema-less data models, prioritize high throughput and horizontal partitioning (sharding) across clusters, often adhering to BASE (Basically Available, Soft state, Eventual consistency) properties.",
+      "keyConcepts": [
+        "Relational tables with strict schemas vs Schema-less/flexible documents",
+        "ACID transactional guarantees vs BASE eventual consistency",
+        "Vertical scaling (compute/storage sizing) vs Horizontal scaling (sharding)",
+        "Complex SQL JOIN queries vs Denormalized embedded document models",
+        "Appropriate selection: structured transactional financial vs polymorphic large-scale telemetry data"
+      ],
+      "antiHallucinationCheck": "Must distinguish relational vs non-relational, schema rigidity vs flexibility, and scaling strategies."
+    },
+    {
+      "id": "api-restful-design",
+      "category": "General CS",
+      "keywords": ["rest", "restful", "http", "stateless", "crud", "get", "post", "put", "delete", "status code", "endpoint", "resource"],
+      "verifiedDefinition": "Representational State Transfer (REST) is an architectural style for networked systems based on stateless client-server communication using standard HTTP methods (GET for safe reads, POST for creation, PUT/PATCH for updates, DELETE for removals). Core constraints include stateless requests (every request contains complete auth and contextual state), resource-based URIs, uniform interfaces, and appropriate HTTP status codes (2xx success, 4xx client errors, 5xx server errors).",
+      "keyConcepts": [
+        "Stateless client-server architecture",
+        "HTTP method semantics (GET, POST, PUT, PATCH, DELETE) and idempotency",
+        "Resource-oriented URI hierarchy (nouns over verbs)",
+        "Standardized HTTP status codes (200, 201, 400, 401, 403, 404, 500)",
+        "Standard representation formats (JSON, MIME types, cache headers)"
+      ],
+      "antiHallucinationCheck": "Must emphasize statelessness, HTTP verbs mapping to CRUD, and resource URIs."
+    },
+    {
+      "id": "css-box-model",
+      "category": "CSS",
+      "keywords": ["css", "box model", "content", "padding", "border", "margin", "box-sizing", "border-box", "content-box"],
+      "verifiedDefinition": "The CSS Box Model is a container design foundation that wraps around every HTML element. It consists of four concentric layers from inside to outside: Content area, Padding (space around content), Border (surrounding the padding), and Margin (transparent space outside the border separating neighboring elements). The 'box-sizing: border-box' property includes padding and border within the specified element width and height.",
+      "keyConcepts": [
+        "Four layers: Content, Padding, Border, Margin",
+        "Difference between padding (inside border) and margin (outside border)",
+        "box-sizing: content-box (default, width excludes padding/border)",
+        "box-sizing: border-box (width includes padding and border, preventing layout overflow)",
+        "Margin collapsing behavior on vertical boundaries"
+      ],
+      "antiHallucinationCheck": "Must list all 4 layers (content, padding, border, margin) and explain box-sizing: border-box."
     },
     {
       "id": "system-design-cap",
       "category": "System Design",
-      "keywords": ["cap theorem", "consistency", "availability", "partition tolerance", "distributed systems"],
-      "verifiedDefinition": "The CAP Theorem states that in a distributed data store, you can only simultaneously provide at most two out of three guarantees: Consistency (every read receives the most recent write or an error), Availability (every request receives a non-error response), and Partition Tolerance (the system continues to operate despite network partitions). Since partitions are inevitable in real networks, distributed systems must trade off Consistency vs Availability (CP or AP).",
+      "keywords": ["cap theorem", "consistency", "availability", "partition tolerance", "distributed systems", "network partition", "pacelc"],
+      "verifiedDefinition": "The CAP Theorem states that in a distributed data store, you can only simultaneously provide at most two out of three guarantees: Consistency (every read receives the most recent write or an error), Availability (every non-failing node returns a response), and Partition Tolerance (the system continues operating despite network message drops). Since network partitions are physically inevitable, distributed systems must trade off Consistency vs Availability (CP vs AP).",
       "keyConcepts": [
-        "Consistency (Strong vs Eventual)",
-        "Availability (High Uptime guarantee)",
-        "Partition Tolerance (Network split fault tolerance)",
-        "PACELC theorem extension",
-        "Tradeoffs in CP vs AP database selections"
-      ]
+        "Consistency (Strong linearizable vs Eventual)",
+        "Availability (Uptime and non-error responses)",
+        "Partition Tolerance (Resilience against network dropouts)",
+        "Inevitable CP vs AP architectural trade-offs",
+        "PACELC extension: latency vs consistency trade-offs when no partition exists"
+      ],
+      "antiHallucinationCheck": "Must state that partition tolerance is mandatory in distributed systems, forcing CP vs AP tradeoff."
     },
     {
       "id": "database-indexing",
       "category": "Databases",
-      "keywords": ["index", "b-tree", "hash index", "query optimization", "sql", "nosql"],
-      "verifiedDefinition": "A database index is a data structure (commonly B-Trees or Hash tables) that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space. Indexes quickly locate rows without scanning every row in a table.",
+      "keywords": ["index", "b-tree", "hash index", "query optimization", "sql", "nosql", "lookup time", "scan"],
+      "verifiedDefinition": "A database index is a data structure (commonly B-Trees or B+Trees) that improves data retrieval speed from O(N) full-table scans to O(log N) logarithmic searches, at the cost of additional disk storage space and write overhead during INSERT, UPDATE, and DELETE operations as indexes must be rebuilt.",
       "keyConcepts": [
-        "B-Tree / B+Tree structure",
-        "Primary vs Secondary indexes",
-        "Lookup time complexity reduction (O(log N) vs O(N))",
-        "Trade-off: slower write/insert/update speeds due to index maintenance",
-        "Composite / multi-column indexing"
-      ]
+        "B-Tree / B+Tree balanced hierarchical structures",
+        "Time complexity improvement (O(log N) vs O(N))",
+        "Primary clustered indexes vs Secondary unclustered indexes",
+        "Write penalty trade-off during row modifications",
+        "Composite index leftmost prefix rules"
+      ],
+      "antiHallucinationCheck": "Must identify B-Tree structures, O(log N) speedups, and write performance penalty."
     },
     {
       "id": "web-security-jwt-csrf",
       "category": "Security",
-      "keywords": ["jwt", "csrf", "xss", "cors", "auth", "token", "cookies"],
-      "verifiedDefinition": "JSON Web Token (JWT) is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object, signed using a secret key or RSA/ECDSA key pair. Tokens consist of Header, Payload, and Signature. Protection against XSS requires storing tokens in HttpOnly cookies, while CSRF protection involves SameSite cookies or anti-CSRF tokens.",
+      "keywords": ["jwt", "csrf", "xss", "cors", "auth", "token", "cookies", "httponly", "samesite"],
+      "verifiedDefinition": "JSON Web Token (JWT) is an open standard (RFC 7519) consisting of Header, Payload, and Signature, used for stateless authentication. To guard against Cross-Site Scripting (XSS), JWTs should be stored in HttpOnly, Secure cookies rather than localStorage. To guard against Cross-Site Request Forgery (CSRF), cookies should use SameSite=Strict/Lax policies or anti-CSRF challenge tokens.",
       "keyConcepts": [
-        "Header, Payload, Signature components",
-        "Stateless server authentication",
-        "HttpOnly and Secure cookie storage vs LocalStorage (XSS risks)",
-        "Expiration (exp claim) and Refresh token rotation",
-        "CSRF prevention mechanisms"
-      ]
+        "Three-part anatomy: Header, Payload, Cryptographic Signature",
+        "Stateless token-based authentication",
+        "HttpOnly and Secure cookie flags preventing XSS token exfiltration",
+        "SameSite cookie attributes and anti-CSRF token verification",
+        "Token expiration (exp claim) and sliding refresh rotation"
+      ],
+      "antiHallucinationCheck": "Must specify 3 JWT parts and explain HttpOnly cookie protection against XSS."
     },
     {
       "id": "dsa-time-complexity",
       "category": "Data Structures & Algorithms",
-      "keywords": ["big o", "time complexity", "space complexity", "hash table", "binary search"],
-      "verifiedDefinition": "Big O notation describes the upper bound performance or complexity of an algorithm in terms of execution time or memory usage as the input size N grows. Hash table lookups are O(1) average, Binary search is O(log N), Merge/Quick sort is O(N log N), and nested loops are O(N^2).",
+      "keywords": ["big o", "time complexity", "space complexity", "hash table", "binary search", "algorithms"],
+      "verifiedDefinition": "Big O notation mathematically characterizes the worst-case upper bound of an algorithm's runtime or auxiliary memory usage as the input size N scales to infinity. Common complexity classes include Constant O(1), Logarithmic O(log N), Linear O(N), Linearithmic O(N log N), and Quadratic O(N^2).",
       "keyConcepts": [
-        "Time vs Space complexity tradeoffs",
-        "Best, Average, and Worst-case bounds",
-        "Dominant terms reduction",
-        "Hash map constant time O(1) collision resolution",
-        "Logarithmic O(log N) divide-and-conquer strategy"
-      ]
+        "Upper bound worst-case asymptotic notation",
+        "Time vs Space memory complexity trade-offs",
+        "O(1) hash table average lookup vs O(N) worst-case collision",
+        "O(log N) divide-and-conquer binary search",
+        "O(N log N) comparison sort algorithms (Merge Sort, Quick Sort)"
+      ],
+      "antiHallucinationCheck": "Must define asymptotic upper bound and cite standard complexity hierarchies."
     }
   ]
 }

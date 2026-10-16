@@ -12,13 +12,39 @@ export const AuthProvider = ({ children }) => {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setUser(parsed);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${parsed.token}`;
+        if (parsed && parsed.token) {
+          setUser(parsed);
+          axios.defaults.headers.common["Authorization"] = `Bearer ${parsed.token}`;
+        } else {
+          localStorage.removeItem("prepai_user");
+        }
       } catch {
         localStorage.removeItem("prepai_user");
       }
     }
     setLoading(false);
+
+    // Event listener for auth expired (triggered on 401 response from backend)
+    const handleAuthExpired = () => {
+      setUser(null);
+      delete axios.defaults.headers.common["Authorization"];
+    };
+
+    // Event listener for refreshed token from backend
+    const handleTokenRefreshed = (e) => {
+      if (e?.detail) {
+        setUser(e.detail);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${e.detail.token}`;
+      }
+    };
+
+    window.addEventListener("prepai_auth_expired", handleAuthExpired);
+    window.addEventListener("prepai_token_refreshed", handleTokenRefreshed);
+
+    return () => {
+      window.removeEventListener("prepai_auth_expired", handleAuthExpired);
+      window.removeEventListener("prepai_token_refreshed", handleTokenRefreshed);
+    };
   }, []);
 
   const login = (userData) => {

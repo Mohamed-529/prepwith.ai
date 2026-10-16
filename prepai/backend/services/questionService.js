@@ -1,5 +1,5 @@
 const cacheService = require("./cacheService");
-const aiService = require("./aiService");
+const evaluationService = require("./evaluationService");
 const logger = require("../utils/logger");
 
 const defaultQuestions = [
@@ -109,7 +109,7 @@ class QuestionService {
       ? { questionId: question.id, questionText: question.question, category: question.category }
       : { questionId, questionText: "Technical Interview Question", category: "General" };
 
-    const evaluation = await aiService.generateFeedback(userAnswer, context);
+    const evaluation = await evaluationService.evaluateAnswer(userAnswer, context);
     return evaluation;
   }
 }

@@ -17,10 +17,26 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // If backend auto-renewed an expired token, sync client storage
+    const newToken = response.headers?.["x-new-token"] || response.headers?.["X-New-Token"];
+    if (newToken) {
+      const stored = localStorage.getItem("prepai_user");
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          user.token = newToken;
+          localStorage.setItem("prepai_user", JSON.stringify(user));
+          window.dispatchEvent(new CustomEvent("prepai_token_refreshed", { detail: user }));
+        } catch {}
+      }
+    }
+    return response;
+  },
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("prepai_user");
+      window.dispatchEvent(new CustomEvent("prepai_auth_expired"));
     }
     return Promise.reject(error);
   }
@@ -33,5 +49,6 @@ export const getQuestions  = (category) => api.get("/api/questions", { params: c
 export const submitAnswers = (data) => api.post("/api/submit", data);
 export const getProgress   = ()     => api.get("/api/progress");
 export const getCacheStats = ()     => api.get("/api/cache/stats");
+export const getArchitectureInfo = () => api.get("/api/architecture");
 
 export default api;

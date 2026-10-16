@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../utils/api";
 
@@ -7,8 +7,18 @@ const LoginPage = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/dashboard";
+
+  // If already authenticated, redirect smoothly to destination
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, from, navigate]);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -22,7 +32,7 @@ const LoginPage = () => {
     try {
       const { data } = await loginUser(form);
       login(data);
-      navigate("/dashboard");
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
