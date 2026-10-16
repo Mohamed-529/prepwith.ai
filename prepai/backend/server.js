@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: true,
+  origin: ["http://localhost:5173", "https://prepwithai-one.vercel.app"],
   credentials: true,
 }));
 app.use(express.json());

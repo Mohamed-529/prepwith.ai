@@ -1,0 +1,6 @@
+{
+  "name": "PrepAI – AI Interview Preparation",
+  "description": "AI-powered technical interview preparation app featuring interview practice, question banks, progress tracking, and performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

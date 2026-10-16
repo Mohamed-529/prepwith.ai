@@ -1,0 +1,108 @@
+{
+  "topics": [
+    {
+      "id": "react-virtual-dom",
+      "category": "React",
+      "keywords": ["virtual dom", "reconciliation", "diffing", "react", "jsx", "fiber"],
+      "verifiedDefinition": "The Virtual DOM is an in-memory lightweight representation of the real DOM. React uses a reconciliation algorithm (Fiber) to compare the current Virtual DOM tree with a new one when state or props change (diffing), calculating the minimum set of DOM operations needed to update the browser UI efficiently.",
+      "keyConcepts": [
+        "In-memory representation of DOM",
+        "Diffing algorithm (O(n) heuristic)",
+        "Reconciliation process",
+        "Fiber architecture for incremental rendering",
+        "Batching DOM updates for performance"
+      ]
+    },
+    {
+      "id": "js-closures",
+      "category": "JavaScript",
+      "keywords": ["closure", "lexical scope", "scope chain", "outer function", "encapsulation"],
+      "verifiedDefinition": "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In JavaScript, closures give inner functions access to an outer function's scope even after the outer function has returned.",
+      "keyConcepts": [
+        "Lexical scoping",
+        "Access to outer scope variables",
+        "Memory persistence of outer variables",
+        "Private variables & data encapsulation",
+        "Common use cases (event handlers, factory functions, currying)"
+      ]
+    },
+    {
+      "id": "js-event-loop",
+      "category": "JavaScript",
+      "keywords": ["event loop", "call stack", "task queue", "microtask queue", "promises", "async"],
+      "verifiedDefinition": "The JavaScript Event Loop is a single-threaded concurrency mechanism that manages the execution of synchronous code on the call stack and async callbacks from the Task Queue (Macrotasks like setTimeout) and Microtask Queue (Promises, process.nextTick). Microtasks are always processed to completion before the next macrotask.",
+      "keyConcepts": [
+        "Single-threaded execution model",
+        "Call Stack execution",
+        "Web APIs / Node C++ APIs background threads",
+        "Microtask Queue priority over Macrotask Queue",
+        "Non-blocking I/O paradigm"
+      ]
+    },
+    {
+      "id": "node-event-emitter",
+      "category": "Node.js",
+      "keywords": ["event emitter", "events", "pub sub", "observer pattern", "node"],
+      "verifiedDefinition": "Node.js EventEmitter is a core module implementing the Observer pattern. It allows objects to emit named events that cause registered listener functions to be called synchronously in the order they were registered.",
+      "keyConcepts": [
+        "Observer design pattern",
+        "Synchronous execution of listeners",
+        "Asynchronous event handling via process.nextTick or setImmediate",
+        "Memory leak handling (maxListeners limit)",
+        "Error event handling"
+      ]
+    },
+    {
+      "id": "system-design-cap",
+      "category": "System Design",
+      "keywords": ["cap theorem", "consistency", "availability", "partition tolerance", "distributed systems"],
+      "verifiedDefinition": "The CAP Theorem states that in a distributed data store, you can only simultaneously provide at most two out of three guarantees: Consistency (every read receives the most recent write or an error), Availability (every request receives a non-error response), and Partition Tolerance (the system continues to operate despite network partitions). Since partitions are inevitable in real networks, distributed systems must trade off Consistency vs Availability (CP or AP).",
+      "keyConcepts": [
+        "Consistency (Strong vs Eventual)",
+        "Availability (High Uptime guarantee)",
+        "Partition Tolerance (Network split fault tolerance)",
+        "PACELC theorem extension",
+        "Tradeoffs in CP vs AP database selections"
+      ]
+    },
+    {
+      "id": "database-indexing",
+      "category": "Databases",
+      "keywords": ["index", "b-tree", "hash index", "query optimization", "sql", "nosql"],
+      "verifiedDefinition": "A database index is a data structure (commonly B-Trees or Hash tables) that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space. Indexes quickly locate rows without scanning every row in a table.",
+      "keyConcepts": [
+        "B-Tree / B+Tree structure",
+        "Primary vs Secondary indexes",
+        "Lookup time complexity reduction (O(log N) vs O(N))",
+        "Trade-off: slower write/insert/update speeds due to index maintenance",
+        "Composite / multi-column indexing"
+      ]
+    },
+    {
+      "id": "web-security-jwt-csrf",
+      "category": "Security",
+      "keywords": ["jwt", "csrf", "xss", "cors", "auth", "token", "cookies"],
+      "verifiedDefinition": "JSON Web Token (JWT) is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object, signed using a secret key or RSA/ECDSA key pair. Tokens consist of Header, Payload, and Signature. Protection against XSS requires storing tokens in HttpOnly cookies, while CSRF protection involves SameSite cookies or anti-CSRF tokens.",
+      "keyConcepts": [
+        "Header, Payload, Signature components",
+        "Stateless server authentication",
+        "HttpOnly and Secure cookie storage vs LocalStorage (XSS risks)",
+        "Expiration (exp claim) and Refresh token rotation",
+        "CSRF prevention mechanisms"
+      ]
+    },
+    {
+      "id": "dsa-time-complexity",
+      "category": "Data Structures & Algorithms",
+      "keywords": ["big o", "time complexity", "space complexity", "hash table", "binary search"],
+      "verifiedDefinition": "Big O notation describes the upper bound performance or complexity of an algorithm in terms of execution time or memory usage as the input size N grows. Hash table lookups are O(1) average, Binary search is O(log N), Merge/Quick sort is O(N log N), and nested loops are O(N^2).",
+      "keyConcepts": [
+        "Time vs Space complexity tradeoffs",
+        "Best, Average, and Worst-case bounds",
+        "Dominant terms reduction",
+        "Hash map constant time O(1) collision resolution",
+        "Logarithmic O(log N) divide-and-conquer strategy"
+      ]
+    }
+  ]
+}

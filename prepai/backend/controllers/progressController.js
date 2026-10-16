@@ -1,149 +1,23 @@
-const Progress = require("../models/Progress");
-const { questions } = require("./questionsController");
+const progressService = require("../services/progressService");
 
-// Mock AI feedback generator
-const generateAIFeedback = (userAnswer, question) => {
-  if (!userAnswer || userAnswer.trim().length === 0) {
-    return "No answer provided. Try to explain the concept in your own words next time.";
-  }
-
-  const answerLower = userAnswer.toLowerCase();
-  const matchedKeywords = question.keywords.filter((kw) =>
-    answerLower.includes(kw.toLowerCase())
-  );
-  const score = matchedKeywords.length;
-  const total = question.keywords.length;
-  const percentage = Math.round((score / total) * 100);
-
-  if (percentage >= 70) {
-    return `Excellent answer! You covered key concepts like: ${matchedKeywords.join(", ")}. Your understanding is strong. Keep it up!`;
-  } else if (percentage >= 40) {
-    return `Good attempt! You mentioned some key points (${matchedKeywords.join(", ")}), but try to also cover: ${question.keywords
-      .filter((k) => !matchedKeywords.includes(k))
-      .slice(0, 3)
-      .join(", ")}.`;
-  } else if (percentage >= 10) {
-    return `Partial answer. You touched on a few concepts, but your answer needs more depth. Review the topic and focus on: ${question.keywords
-      .slice(0, 4)
-      .join(", ")}.`;
-  } else {
-    return `This answer needs improvement. Try to include concepts like: ${question.keywords
-      .slice(0, 4)
-      .join(", ")}. Review the topic and try again!`;
-  }
-};
-
-// Check if answer is correct (keyword-based scoring)
-const evaluateAnswer = (userAnswer, question) => {
-  if (!userAnswer || userAnswer.trim().length < 10) return false;
-
-  const answerLower = userAnswer.toLowerCase();
-  const matchedKeywords = question.keywords.filter((kw) =>
-    answerLower.includes(kw.toLowerCase())
-  );
-
-  return matchedKeywords.length >= Math.ceil(question.keywords.length * 0.4);
-};
-
-// @desc    Submit interview answers
-// @route   POST /api/submit
-// @access  Private
-const submitAnswers = async (req, res) => {
+exports.submitAnswers = async (req, res, next) => {
   try {
     const { answers } = req.body;
-
-    if (!answers || !Array.isArray(answers) || answers.length === 0) {
-      return res.status(400).json({ message: "Answers array is required" });
-    }
-
-    let score = 0;
-    const evaluatedAnswers = [];
-
-    for (const answer of answers) {
-      const question = questions.find((q) => q.id === answer.questionId);
-
-      if (!question) {
-        evaluatedAnswers.push({
-          questionId: answer.questionId,
-          questionText: answer.questionText || "Unknown question",
-          userAnswer: answer.userAnswer || "",
-          isCorrect: false,
-          feedback: "Question not found.",
-        });
-        continue;
-      }
-
-      const isCorrect = evaluateAnswer(answer.userAnswer, question);
-      const feedback = generateAIFeedback(answer.userAnswer, question);
-
-      if (isCorrect) score++;
-
-      evaluatedAnswers.push({
-        questionId: question.id,
-        questionText: question.question,
-        userAnswer: answer.userAnswer || "",
-        isCorrect,
-        feedback,
-      });
-    }
-
-    // Save progress to DB
-    const progress = await Progress.create({
+    const result = await progressService.processAndSaveAnswers({
       userId: req.user._id,
-      score,
-      totalQuestions: evaluatedAnswers.length,
-      answers: evaluatedAnswers,
-      date: new Date(),
+      answers,
     });
-
-    res.status(200).json({
-      success: true,
-      score,
-      totalQuestions: evaluatedAnswers.length,
-      percentage: Math.round((score / evaluatedAnswers.length) * 100),
-      answers: evaluatedAnswers,
-      progressId: progress._id,
-    });
+    res.status(201).json(result);
   } catch (error) {
-    console.error("Submit error:", error.message);
-    res.status(500).json({ message: "Server error: " + error.message });
+    next(error);
   }
 };
 
-// @desc    Get user progress history
-// @route   GET /api/progress
-// @access  Private
-const getProgress = async (req, res) => {
+exports.getProgress = async (req, res, next) => {
   try {
-    const [progressHistory, allSessions] = await Promise.all([
-      Progress.find({ userId: req.user._id }).sort({ date: -1 }).limit(10),
-      Progress.find({ userId: req.user._id }).select("score totalQuestions"),
-    ]);
-
-    const percentages = allSessions
-      .filter((p) => p.totalQuestions > 0)
-      .map((p) => Math.round((p.score / p.totalQuestions) * 100));
-
-    const stats = {
-      totalSessions: allSessions.length,
-      averageScore:
-        percentages.length > 0
-          ? Math.round(
-              percentages.reduce((acc, pct) => acc + pct, 0) / percentages.length
-            )
-          : 0,
-      bestScore: percentages.length > 0 ? Math.max(...percentages) : 0,
-    };
-
-    res.status(200).json({
-      success: true,
-      stats,
-      history: progressHistory,
-    });
+    const data = await progressService.getUserProgress(req.user._id);
+    res.status(200).json(data);
   } catch (error) {
-    console.error("Get progress error:", error.message);
-    res.status(500).json({ message: "Server error: " + error.message });
+    next(error);
   }
 };
-
-module.exports = { submitAnswers, getProgress };
