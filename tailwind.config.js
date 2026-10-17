@@ -25,20 +25,41 @@ export default {
           700: "#4338ca",
           800: "#3730a3",
           900: "#312e81",
+          950: "#1e1b4b",
+        },
+        cyber: {
+          cyan: "#06b6d4",
+          violet: "#a855f7",
+          emerald: "#10b981",
+          rose: "#f43f5e",
+          amber: "#f59e0b",
         },
         dark: {
-          900: "#0a0a0f",
-          800: "#111118",
-          700: "#1a1a24",
-          600: "#22222f",
-          500: "#2d2d3d",
-          400: "#3d3d52",
+          950: "#050711",
+          900: "#090d1e",
+          850: "#0e1329",
+          800: "#131936",
+          700: "#1a2347",
+          600: "#242f5c",
+          500: "#313f75",
+          400: "#47599e",
         },
+      },
+      boxShadow: {
+        glow: "0 0 25px -5px rgba(99, 102, 241, 0.4)",
+        "glow-cyan": "0 0 25px -5px rgba(6, 182, 212, 0.4)",
+        "glow-emerald": "0 0 25px -5px rgba(16, 185, 129, 0.4)",
+        "glow-violet": "0 0 25px -5px rgba(168, 85, 247, 0.4)",
+        card: "0 8px 32px 0 rgba(0, 0, 0, 0.36)",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",
         "slide-up": "slideUp 0.4s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -48,6 +69,10 @@ export default {
         slideUp: {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
         },
       },
     },

@@ -105,9 +105,9 @@ export const InterviewLockProvider = ({ children }) => {
 
       {/* Global Quit Notice Modal */}
       {showQuitModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="card max-w-sm w-full bg-dark-800 border-red-500/40 shadow-2xl p-6 relative animate-scale-up">
-            <div className="w-12 h-12 rounded-2xl bg-red-950/80 border border-red-500/40 flex items-center justify-center text-2xl mb-4 text-red-400">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="card max-w-sm w-full bg-dark-900 border-rose-500/40 shadow-2xl p-6 relative animate-scale-up">
+            <div className="w-12 h-12 rounded-2xl bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-2xl mb-4 text-rose-400 shadow-sm">
               ⚠️
             </div>
 
@@ -127,7 +127,7 @@ export const InterviewLockProvider = ({ children }) => {
               <button
                 type="button"
                 onClick={confirmQuit}
-                className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-900/40 transition-colors"
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-900/40 transition-colors"
               >
                 Quit & Exit
               </button>

@@ -618,36 +618,39 @@ const InterviewPage = () => {
   // ==========================================
   if (phase === "setup") {
     return (
-      <div className="max-w-xl mx-auto px-4 py-8">
-        <div className="card bg-dark-800/90 border-dark-600 shadow-2xl p-6 sm:p-8 animate-slide-up">
+      <div className="max-w-xl mx-auto px-4 py-8 relative">
+        {/* Subtle ambient light behind setup card */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-brand-600/15 rounded-full blur-[90px] pointer-events-none" />
+
+        <div className="card bg-dark-900/80 backdrop-blur-2xl border-white/[0.08] shadow-2xl p-6 sm:p-8 animate-slide-up relative z-10">
           {/* Header with Bot Avatar dummy image */}
-          <div className="flex items-center gap-4 mb-5">
+          <div className="flex items-center gap-4 mb-6 pb-4 border-b border-white/[0.06]">
             <BotAvatar size="lg" isSpeaking={isAiSpeaking} showStatus={true} />
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-700/50 text-emerald-400 text-[11px] font-semibold mb-0.5">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-[11px] font-semibold mb-1 shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                AI Interviewer Online
+                AI Interviewer Connected
               </div>
-              <h2 className="text-xl font-bold text-white">Voice Mock Interview</h2>
-              <p className="text-gray-400 text-xs">Spoken technical interview evaluated by RAG</p>
+              <h2 className="text-xl font-bold text-white tracking-tight">Voice Mock Interview</h2>
+              <p className="text-gray-400 text-xs">Spoken technical interview evaluated by real-time RAG</p>
             </div>
           </div>
 
           {/* Domain Track Selection */}
-          <div className="mb-5">
-            <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-2">
-              Select Track:
+          <div className="mb-6">
+            <label className="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-2.5">
+              Select Practice Track:
             </label>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
                     selectedCategory === cat
-                      ? "bg-brand-600 text-white shadow-md shadow-brand-900/50 ring-2 ring-brand-400/30"
-                      : "bg-dark-700 text-gray-400 hover:text-gray-200 border border-dark-600"
+                      ? "bg-gradient-to-r from-brand-600 to-indigo-600 text-white shadow-md shadow-brand-500/30 border border-brand-400/40 scale-105"
+                      : "bg-dark-950/70 text-gray-400 hover:text-gray-200 border border-white/[0.06] hover:border-white/20"
                   }`}
                 >
                   {cat}
@@ -657,50 +660,52 @@ const InterviewPage = () => {
           </div>
 
           {/* Voice Engine & Customization */}
-          <div className="p-3.5 rounded-xl bg-dark-900/90 border border-dark-700 mb-5">
-            <div className="flex items-center justify-between gap-3 mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-base">🎙️</span>
+          <div className="p-4 rounded-2xl bg-dark-950/80 border border-white/[0.08] mb-6 shadow-inner">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-sm">
+                  🎙️
+                </div>
                 <div>
-                  <p className="text-xs font-semibold text-white">AI Spoken Voice</p>
-                  <p className="text-[11px] text-brand-300 font-mono truncate max-w-[200px]">
+                  <p className="text-xs font-bold text-white">AI Spoken Voice</p>
+                  <p className="text-[11px] text-cyan-300 font-mono truncate max-w-[190px]">
                     {activeVoiceObj ? activeVoiceObj.name : "System Natural Voice"}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     speakAI("PrepAI is ready for your technical interview.");
                     showToast("Audio test played.");
                   }}
-                  className="px-2.5 py-1 rounded-lg bg-dark-700 hover:bg-dark-600 border border-dark-600 text-xs text-gray-200 shrink-0"
+                  className="px-2.5 py-1.5 rounded-xl bg-dark-850 hover:bg-dark-800 border border-white/10 text-xs text-gray-200 font-medium shrink-0 transition-colors"
                 >
                   🔊 Test
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowVoiceModal(true)}
-                  className="px-2.5 py-1 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium shrink-0"
+                  className="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shrink-0 shadow-sm shadow-brand-500/20 transition-all"
                 >
                   Change Voice
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-gray-400 pt-2 border-t border-dark-800">
-              <span>Speech Speed:</span>
-              <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between text-[11px] text-gray-400 pt-3 border-t border-white/[0.06]">
+              <span className="font-medium text-gray-300">Speech Speed:</span>
+              <div className="flex items-center gap-1.5">
                 {[0.9, 1.0, 1.1].map((r) => (
                   <button
                     key={r}
                     type="button"
                     onClick={() => setVoiceRate(r)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-mono ${
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold transition-colors ${
                       voiceRate === r
-                        ? "bg-brand-600 text-white"
-                        : "bg-dark-800 text-gray-400 hover:text-white"
+                        ? "bg-brand-600 text-white shadow-sm"
+                        : "bg-dark-900 text-gray-400 hover:text-white border border-white/5"
                     }`}
                   >
                     {r}x
@@ -711,27 +716,27 @@ const InterviewPage = () => {
           </div>
 
           {/* Rules / Badges */}
-          <div className="grid grid-cols-3 gap-2.5 mb-6 text-center">
-            <div className="bg-dark-900/80 p-2.5 rounded-xl border border-dark-700">
+          <div className="grid grid-cols-3 gap-3 mb-6 text-center">
+            <div className="bg-dark-950/70 p-3 rounded-xl border border-white/[0.06]">
               <span className="text-base">👋</span>
-              <p className="text-xs font-semibold text-white mt-1">Warm Wish</p>
+              <p className="text-xs font-bold text-white mt-1">Warm Wish</p>
               <p className="text-[10px] text-gray-400 mt-0.5">Greeting first</p>
             </div>
-            <div className="bg-dark-900/80 p-2.5 rounded-xl border border-dark-700">
+            <div className="bg-dark-950/70 p-3 rounded-xl border border-white/[0.06]">
               <span className="text-base">🎙️</span>
-              <p className="text-xs font-semibold text-emerald-400 mt-1">Voice Only</p>
+              <p className="text-xs font-bold text-emerald-400 mt-1">Voice Only</p>
               <p className="text-[10px] text-gray-400 mt-0.5">Spoken answers</p>
             </div>
-            <div className="bg-dark-900/80 p-2.5 rounded-xl border border-dark-700">
+            <div className="bg-dark-950/70 p-3 rounded-xl border border-white/[0.06]">
               <span className="text-base">🔒</span>
-              <p className="text-xs font-semibold text-purple-400 mt-1">Locked</p>
+              <p className="text-xs font-bold text-purple-400 mt-1">Locked</p>
               <p className="text-[10px] text-gray-400 mt-0.5">Focus mode</p>
             </div>
           </div>
 
           <button
             onClick={handleEnterInterviewRoom}
-            className="btn-primary w-full text-sm py-3.5 flex items-center justify-center gap-2 shadow-xl shadow-brand-900/50"
+            className="btn-primary w-full text-sm py-3.5 flex items-center justify-center gap-2 shadow-xl shadow-brand-500/30"
           >
             <span>Enter Interview Room →</span>
           </button>
@@ -739,17 +744,17 @@ const InterviewPage = () => {
 
         {/* Voice Selection Modal */}
         {showVoiceModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="card max-w-md w-full bg-dark-800 border-dark-600 shadow-2xl p-5 relative animate-scale-up">
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-dark-700">
-                <div className="flex items-center gap-2">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+            <div className="card max-w-md w-full bg-dark-900 border-white/[0.1] shadow-2xl p-6 relative animate-scale-up">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.08]">
+                <div className="flex items-center gap-2.5">
                   <span className="text-lg">🎙️</span>
                   <h3 className="text-base font-bold text-white">Select AI Voice</h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowVoiceModal(false)}
-                  className="p-1 rounded-lg hover:bg-dark-700 text-gray-400 hover:text-white"
+                  className="p-1 rounded-lg hover:bg-dark-800 text-gray-400 hover:text-white"
                 >
                   ✕
                 </button>
@@ -759,7 +764,7 @@ const InterviewPage = () => {
                 Choose the natural voice you prefer for the interviewer bot:
               </p>
 
-              <div className="max-h-60 overflow-y-auto space-y-1.5 pr-1 mb-4">
+              <div className="max-h-60 overflow-y-auto space-y-2 pr-1 mb-5">
                 {availableVoices.map((v) => {
                   const isSelected = v.voiceURI === selectedVoiceURI;
                   return (
@@ -767,17 +772,17 @@ const InterviewPage = () => {
                       key={v.voiceURI}
                       type="button"
                       onClick={() => handleSelectVoice(v.voiceURI)}
-                      className={`w-full text-left p-2.5 rounded-xl text-xs flex items-center justify-between transition-colors border ${
+                      className={`w-full text-left p-3 rounded-xl text-xs flex items-center justify-between transition-all border ${
                         isSelected
-                          ? "bg-brand-900/50 border-brand-500 text-white font-semibold"
-                          : "bg-dark-900/70 border-dark-700/80 text-gray-300 hover:bg-dark-700 hover:text-white"
+                          ? "bg-brand-950/80 border-brand-500 text-white font-semibold shadow-glow"
+                          : "bg-dark-950/70 border-white/[0.06] text-gray-300 hover:bg-dark-850 hover:text-white"
                       }`}
                     >
                       <div className="truncate pr-2">
-                        <p className="truncate font-medium">{v.name}</p>
-                        <p className="text-[10px] text-gray-500 font-mono">{v.lang}</p>
+                        <p className="truncate font-semibold text-white">{v.name}</p>
+                        <p className="text-[10px] text-gray-400 font-mono mt-0.5">{v.lang}</p>
                       </div>
-                      {isSelected && <span className="text-brand-400 text-sm">✓</span>}
+                      {isSelected && <span className="text-cyan-400 text-base font-bold">✓</span>}
                     </button>
                   );
                 })}
@@ -787,7 +792,7 @@ const InterviewPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowVoiceModal(false)}
-                  className="btn-primary text-xs py-2 px-4"
+                  className="btn-primary text-xs py-2.5 px-5 shadow-sm"
                 >
                   Done
                 </button>
@@ -804,14 +809,17 @@ const InterviewPage = () => {
   // ==========================================
   if (phase === "wishing") {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-8 animate-fade-in">
+      <div className="max-w-2xl mx-auto px-4 py-8 animate-fade-in relative">
+        {/* Ambient glow behind bot in wishing room */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none" />
+
         {/* Top Focus & Quit Header */}
-        <div className="card bg-dark-800/90 border-dark-600 p-3.5 mb-6 flex items-center justify-between gap-3 shadow-lg">
-          <div className="flex items-center gap-2.5">
+        <div className="card bg-dark-900/80 backdrop-blur-xl border-white/[0.08] p-3.5 mb-6 flex items-center justify-between gap-3 shadow-lg relative z-10">
+          <div className="flex items-center gap-3">
             <BotAvatar size="sm" isSpeaking={isAiSpeaking} showStatus={true} />
             <div>
-              <p className="text-xs font-bold text-white">AI Interviewer Room</p>
-              <p className="text-[10px] text-emerald-400 flex items-center gap-1">
+              <p className="text-xs font-bold text-white">AI Interview Studio Room</p>
+              <p className="text-[10px] text-emerald-400 flex items-center gap-1 font-semibold">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Session Initialized • Focus Locked
               </p>
@@ -822,14 +830,14 @@ const InterviewPage = () => {
             <button
               type="button"
               onClick={() => setShowVoiceModal(true)}
-              className="px-2 py-1 rounded-lg bg-dark-700 hover:bg-dark-600 border border-dark-600 text-xs text-gray-300"
+              className="px-2.5 py-1.5 rounded-xl bg-dark-850 hover:bg-dark-800 border border-white/10 text-xs text-gray-200 transition-colors"
             >
               🎙️ Voice
             </button>
             <button
               type="button"
               onClick={handleQuitInterview}
-              className="px-2.5 py-1 rounded-lg bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-300 text-xs font-medium transition-colors"
+              className="px-3 py-1.5 rounded-xl bg-rose-950/70 hover:bg-rose-900/80 border border-rose-500/40 text-rose-300 text-xs font-semibold transition-colors"
             >
               🚪 Quit
             </button>
@@ -837,40 +845,37 @@ const InterviewPage = () => {
         </div>
 
         {/* Central Greeting & Wish Card */}
-        <div className="card bg-dark-800 border-brand-500/30 p-6 sm:p-8 shadow-2xl text-center relative overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="card bg-dark-900/85 backdrop-blur-2xl border-brand-500/40 p-6 sm:p-10 shadow-2xl text-center relative overflow-hidden z-10">
+          {/* Subtle top gradient bar */}
+          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-cyan-400 via-brand-500 to-purple-500" />
 
           {/* Prominent Bot Avatar Dummy Image */}
-          <div className="flex flex-col items-center justify-center mb-5">
+          <div className="flex flex-col items-center justify-center mb-6">
             <BotAvatar size="xl" isSpeaking={isAiSpeaking} showStatus={true} />
-            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-950/80 border border-brand-500/40 text-brand-300 text-xs font-medium">
-              <span className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
+            <div className="mt-3.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950/90 border border-brand-500/40 text-brand-300 text-xs font-semibold shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <span>{isAiSpeaking ? "Interviewer Speaking..." : "Interviewer Ready"}</span>
             </div>
           </div>
 
           {/* Warm Wish Title & Text */}
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-3 tracking-tight">
             Best of Luck on Your Interview!
           </h2>
-          <div className="p-4 rounded-2xl bg-dark-900/80 border border-dark-700 text-gray-200 text-sm leading-relaxed max-w-lg mx-auto mb-6 shadow-inner">
-            <p className="italic">
-              "{WISH_MESSAGE}"
-            </p>
+          <div className="p-5 rounded-2xl bg-dark-950/90 border border-white/[0.08] text-gray-200 text-sm leading-relaxed max-w-lg mx-auto mb-6 shadow-inner">
+            <p className="italic">"{WISH_MESSAGE}"</p>
           </div>
 
           {/* Track Summary Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-6 text-xs text-gray-400">
-            <span className="px-2.5 py-1 rounded-lg bg-dark-900 border border-dark-700">
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-8 text-xs text-gray-300">
+            <span className="px-3 py-1 rounded-xl bg-dark-950 border border-white/10">
               Track: <strong className="text-white">{selectedCategory}</strong>
             </span>
-            <span className="px-2.5 py-1 rounded-lg bg-dark-900 border border-dark-700">
+            <span className="px-3 py-1 rounded-xl bg-dark-950 border border-white/10">
               Questions: <strong className="text-white">{questions.length} Total</strong>
             </span>
-            <span className="px-2.5 py-1 rounded-lg bg-dark-900 border border-dark-700">
-              Voice: <strong className="text-brand-300">{activeVoiceObj ? activeVoiceObj.name.split(" ")[0] : "AI"}</strong>
+            <span className="px-3 py-1 rounded-xl bg-dark-950 border border-white/10">
+              Voice: <strong className="text-cyan-300">{activeVoiceObj ? activeVoiceObj.name.split(" ")[0] : "AI"}</strong>
             </span>
           </div>
 
@@ -887,36 +892,36 @@ const InterviewPage = () => {
             <button
               type="button"
               onClick={handleProceedToQuestions}
-              className="btn-primary w-full sm:w-auto text-sm py-3 px-6 flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 via-indigo-600 to-emerald-600 hover:from-brand-500 hover:to-emerald-500 shadow-xl shadow-brand-900/40"
+              className="btn-primary w-full sm:w-auto text-sm py-3 px-7 flex items-center justify-center gap-2 bg-gradient-to-r from-brand-600 via-indigo-600 to-emerald-600 hover:from-brand-500 hover:to-emerald-500 shadow-xl shadow-brand-500/30"
             >
               <span>Proceed to First Question →</span>
             </button>
           </div>
 
-          <p className="text-[11px] text-gray-400 mt-4">
-            Navigation is locked during the interview. The timer begins when you click Proceed.
+          <p className="text-[11px] text-gray-400 mt-5">
+            Navigation is locked during the interview. The 120s timer begins when you click Proceed.
           </p>
         </div>
 
         {/* Voice Selection Modal */}
         {showVoiceModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="card max-w-md w-full bg-dark-800 border-dark-600 shadow-2xl p-5 relative animate-scale-up">
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-dark-700">
-                <div className="flex items-center gap-2">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+            <div className="card max-w-md w-full bg-dark-900 border-white/[0.1] shadow-2xl p-6 relative animate-scale-up">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.08]">
+                <div className="flex items-center gap-2.5">
                   <span className="text-lg">🎙️</span>
                   <h3 className="text-base font-bold text-white">Select AI Voice</h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowVoiceModal(false)}
-                  className="p-1 rounded-lg hover:bg-dark-700 text-gray-400 hover:text-white"
+                  className="p-1 rounded-lg hover:bg-dark-800 text-gray-400 hover:text-white"
                 >
                   ✕
                 </button>
               </div>
 
-              <div className="max-h-60 overflow-y-auto space-y-1.5 pr-1 mb-4">
+              <div className="max-h-60 overflow-y-auto space-y-2 pr-1 mb-5">
                 {availableVoices.map((v) => {
                   const isSelected = v.voiceURI === selectedVoiceURI;
                   return (
@@ -924,17 +929,17 @@ const InterviewPage = () => {
                       key={v.voiceURI}
                       type="button"
                       onClick={() => handleSelectVoice(v.voiceURI)}
-                      className={`w-full text-left p-2.5 rounded-xl text-xs flex items-center justify-between transition-colors border ${
+                      className={`w-full text-left p-3 rounded-xl text-xs flex items-center justify-between transition-all border ${
                         isSelected
-                          ? "bg-brand-900/50 border-brand-500 text-white font-semibold"
-                          : "bg-dark-900/70 border-dark-700/80 text-gray-300 hover:bg-dark-700 hover:text-white"
+                          ? "bg-brand-950/80 border-brand-500 text-white font-semibold shadow-glow"
+                          : "bg-dark-950/70 border-white/[0.06] text-gray-300 hover:bg-dark-850 hover:text-white"
                       }`}
                     >
                       <div className="truncate pr-2">
-                        <p className="truncate font-medium">{v.name}</p>
-                        <p className="text-[10px] text-gray-500 font-mono">{v.lang}</p>
+                        <p className="truncate font-semibold text-white">{v.name}</p>
+                        <p className="text-[10px] text-gray-400 font-mono mt-0.5">{v.lang}</p>
                       </div>
-                      {isSelected && <span className="text-brand-400 text-sm">✓</span>}
+                      {isSelected && <span className="text-cyan-400 text-base font-bold">✓</span>}
                     </button>
                   );
                 })}
@@ -944,7 +949,7 @@ const InterviewPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowVoiceModal(false)}
-                  className="btn-primary text-xs py-2 px-4"
+                  className="btn-primary text-xs py-2.5 px-5"
                 >
                   Done
                 </button>
@@ -960,31 +965,33 @@ const InterviewPage = () => {
   // PHASE 3: ACTIVE QUESTIONS & SPOKEN ANSWERS
   // ==========================================
   return (
-    <div className="max-w-3xl mx-auto px-4 py-5 pb-20">
+    <div className="max-w-3xl mx-auto px-4 py-5 pb-20 relative">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-16 right-4 z-50 px-3.5 py-2 rounded-xl bg-dark-800/95 border border-brand-500/40 text-brand-200 text-xs flex items-center gap-2 shadow-xl backdrop-blur-md animate-slide-up">
+        <div className="fixed top-16 right-4 z-50 px-4 py-2.5 rounded-xl bg-dark-900/95 border border-brand-500/50 text-brand-200 text-xs flex items-center gap-2 shadow-2xl backdrop-blur-xl animate-slide-up">
           <span>🔔</span>
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Top Header Bar */}
-      <div className="card bg-dark-800/90 border-dark-600 p-3.5 mb-5 shadow-lg backdrop-blur-sm sticky top-16 z-30">
+      <div className="card bg-dark-900/85 border-white/[0.08] p-3.5 mb-5 shadow-2xl backdrop-blur-2xl sticky top-16 z-30">
         <div className="flex items-center justify-between gap-3">
           {/* AI Persona with Bot Avatar dummy image */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <BotAvatar size="md" isSpeaking={isAiSpeaking} showStatus={true} />
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-xs font-bold text-white">AI Interviewer</span>
-                <span className="badge-indigo text-[10px] py-0 px-1.5">{currentQ?.category}</span>
+                <span className="badge-cyan text-[10px] py-0 px-2">{currentQ?.category}</span>
               </div>
-              <p className="text-[11px] text-gray-400">
+              <p className="text-[11px] text-gray-400 mt-0.5">
                 {isAiSpeaking ? (
-                  <span className="text-cyan-400 font-semibold animate-pulse">Speaking question...</span>
+                  <span className="text-cyan-300 font-semibold animate-pulse flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> Speaking question...
+                  </span>
                 ) : (
-                  <span>Active Voice Session</span>
+                  <span>Awaiting spoken response</span>
                 )}
               </p>
             </div>
@@ -995,7 +1002,7 @@ const InterviewPage = () => {
             <button
               type="button"
               onClick={() => setShowVoiceModal(true)}
-              className="p-1.5 px-2 rounded-lg text-xs font-medium border border-dark-600 bg-dark-700 text-gray-300 hover:text-white"
+              className="p-1.5 px-2.5 rounded-xl text-xs font-semibold border border-white/10 bg-dark-850 hover:bg-dark-800 text-gray-200 transition-colors"
               title="Change Voice"
             >
               🎙️ Voice
@@ -1010,10 +1017,10 @@ const InterviewPage = () => {
                   showToast("Muted.");
                 } else {
                   setAiVoiceEnabled(true);
-                  showToast("Voice on.");
+                  showToast("Voice enabled.");
                 }
               }}
-              className="p-1.5 px-2 rounded-lg text-xs font-medium border border-dark-600 bg-dark-700 text-gray-300 hover:text-white"
+              className="p-1.5 px-2.5 rounded-xl text-xs font-semibold border border-white/10 bg-dark-850 hover:bg-dark-800 text-gray-200 transition-colors"
             >
               {aiVoiceEnabled ? "🔊 Sound" : "🔇 Muted"}
             </button>
@@ -1023,7 +1030,7 @@ const InterviewPage = () => {
               onClick={() => {
                 if (currentQ) speakAI(`Question ${currentIdx + 1}. ${currentQ.question}`);
               }}
-              className="p-1.5 px-2 rounded-lg text-xs font-medium border border-dark-600 bg-dark-700 text-gray-300 hover:text-white"
+              className="p-1.5 px-2.5 rounded-xl text-xs font-semibold border border-white/10 bg-dark-850 hover:bg-dark-800 text-gray-200 transition-colors"
             >
               🔁 Repeat
             </button>
@@ -1031,7 +1038,7 @@ const InterviewPage = () => {
             <button
               type="button"
               onClick={handleQuitInterview}
-              className="p-1.5 px-2 rounded-lg text-xs font-medium border border-red-800/60 bg-red-950/60 text-red-300 hover:bg-red-900 transition-colors"
+              className="p-1.5 px-2.5 rounded-xl text-xs font-semibold border border-rose-500/40 bg-rose-950/70 text-rose-300 hover:bg-rose-900 transition-colors"
               title="Quit Session"
             >
               🚪 Quit
@@ -1042,20 +1049,20 @@ const InterviewPage = () => {
         </div>
 
         {/* Step Progress Bar */}
-        <div className="mt-2.5 pt-2 border-t border-dark-700/60">
-          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+        <div className="mt-3 pt-2.5 border-t border-white/[0.06]">
+          <div className="flex items-center justify-between text-xs text-gray-400 mb-1.5">
             <span>
               Question <span className="text-white font-bold">{currentIdx + 1}</span> of{" "}
               <span className="text-white font-bold">{questions.length}</span>
             </span>
             <div className="flex items-center gap-2 text-[11px]">
-              <span className="text-emerald-400">🔒 {submittedIndices.size} locked</span>
+              <span className="text-emerald-400 font-semibold">🔒 {submittedIndices.size} locked</span>
               <span className="text-gray-400">• {answeredCount} spoken</span>
             </div>
           </div>
-          <div className="h-1 bg-dark-900 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-dark-950 rounded-full overflow-hidden p-[1px]">
             <div
-              className="h-full bg-gradient-to-r from-brand-500 to-indigo-500 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-brand-500 via-cyan-400 to-emerald-400 rounded-full transition-all duration-300"
               style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
             />
           </div>
@@ -1065,16 +1072,14 @@ const InterviewPage = () => {
       {/* Main Conversational Chat Feed */}
       <div className="space-y-4 mb-6">
         {/* System Initial Wishing Message with Bot Avatar */}
-        <div className="flex items-start gap-2.5 animate-fade-in">
+        <div className="flex items-start gap-3 animate-fade-in">
           <BotAvatar size="sm" isSpeaking={false} />
-          <div className="bg-dark-800/90 border border-brand-500/30 rounded-2xl rounded-tl-sm p-3.5 max-w-xl text-xs text-gray-200 shadow-md">
+          <div className="bg-dark-900/80 border border-brand-500/30 rounded-2xl rounded-tl-sm p-4 max-w-xl text-xs text-gray-200 shadow-lg">
             <div className="flex items-center gap-2 mb-1">
               <span className="font-bold text-white">AI Interviewer</span>
-              <span className="text-[10px] text-brand-300 font-mono">Greeting & Wish</span>
+              <span className="text-[10px] text-cyan-300 font-mono">Greeting & Wish</span>
             </div>
-            <p className="italic">
-              "{WISH_MESSAGE}"
-            </p>
+            <p className="italic text-gray-300">"{WISH_MESSAGE}"</p>
           </div>
         </div>
 
@@ -1082,28 +1087,28 @@ const InterviewPage = () => {
         {questions.slice(0, currentIdx).map((q, idx) => {
           const pastAnswer = answers[q.id] || "";
           return (
-            <div key={q.id} className="space-y-3 pt-3 border-t border-dark-800/80">
-              <div className="flex items-start gap-2.5 opacity-80">
+            <div key={q.id} className="space-y-3 pt-3 border-t border-white/[0.06]">
+              <div className="flex items-start gap-3 opacity-80">
                 <BotAvatar size="sm" isSpeaking={false} />
-                <div className="bg-dark-800 border border-dark-700 rounded-2xl rounded-tl-sm p-3.5 max-w-xl text-xs">
-                  <div className="flex items-center gap-1.5 mb-1 text-[11px] text-gray-400">
-                    <span>Q{idx + 1}</span>
+                <div className="bg-dark-900/70 border border-white/10 rounded-2xl rounded-tl-sm p-4 max-w-xl text-xs">
+                  <div className="flex items-center gap-1.5 mb-1.5 text-[11px] text-gray-400">
+                    <span className="font-bold">Q{idx + 1}</span>
                     <span className="badge-indigo text-[10px] py-0 px-1.5">{q.category}</span>
-                    <span className="text-emerald-400 ml-auto">🔒 Locked</span>
+                    <span className="text-emerald-400 ml-auto font-semibold">🔒 Locked</span>
                   </div>
-                  <p className="font-medium text-white">{q.question}</p>
+                  <p className="font-semibold text-white">{q.question}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5 justify-end opacity-85">
-                <div className="bg-dark-700/90 border border-dark-600 rounded-2xl rounded-tr-sm p-3 max-w-xl text-xs">
+              <div className="flex items-start gap-3 justify-end opacity-85">
+                <div className="bg-dark-850/80 border border-white/10 rounded-2xl rounded-tr-sm p-3.5 max-w-xl text-xs">
                   <div className="flex items-center justify-between gap-3 mb-1 text-[11px] text-gray-400">
-                    <span className="text-emerald-400">🎙️ Spoken</span>
+                    <span className="text-emerald-400 font-semibold">🎙️ Candidate Voice</span>
                     <span>{pastAnswer ? pastAnswer.split(/\s+/).length : 0} words</span>
                   </div>
-                  <p className="text-gray-200 italic">"{pastAnswer || "No answer recorded."}"</p>
+                  <p className="text-gray-200 italic font-mono text-[11px]">"{pastAnswer || "No answer recorded."}"</p>
                 </div>
-                <div className="w-8 h-8 rounded-lg bg-dark-700 border border-dark-500 flex items-center justify-center text-white text-xs shrink-0 font-bold">
+                <div className="w-8 h-8 rounded-xl bg-dark-950 border border-white/10 flex items-center justify-center text-white text-xs shrink-0 font-bold shadow-sm">
                   You
                 </div>
               </div>
@@ -1113,37 +1118,37 @@ const InterviewPage = () => {
 
         {/* Current Active Question */}
         {currentQ && (
-          <div className="space-y-3 pt-2 animate-fade-in" key={currentQ.id}>
-            <div className="flex items-start gap-2.5">
+          <div className="space-y-4 pt-2 animate-fade-in" key={currentQ.id}>
+            <div className="flex items-start gap-3">
               <BotAvatar size="sm" isSpeaking={isAiSpeaking} />
-              <div className="bg-dark-800 border border-brand-500/40 rounded-2xl rounded-tl-sm p-4 max-w-xl text-xs shadow-lg">
-                <div className="flex items-center justify-between gap-2 mb-1.5">
+              <div className="bg-dark-900/90 border border-brand-500/40 rounded-2xl rounded-tl-sm p-5 max-w-xl text-xs shadow-glow">
+                <div className="flex items-center justify-between gap-2 mb-2">
                   <div className="flex items-center gap-1.5">
-                    <span className="badge-indigo text-[10px] py-0 px-2">{currentQ.category}</span>
-                    <span className="text-[11px] font-mono text-gray-400">Q{currentIdx + 1}</span>
+                    <span className="badge-cyan text-[10px] py-0 px-2">{currentQ.category}</span>
+                    <span className="text-[11px] font-mono text-gray-400 font-bold">Q{currentIdx + 1}</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => speakAI(currentQ.question)}
-                    className="text-[11px] text-brand-300 hover:text-white flex items-center gap-1 bg-brand-950/80 px-2 py-0.5 rounded border border-brand-800/60"
+                    className="text-[11px] text-brand-300 hover:text-white flex items-center gap-1 bg-brand-950/80 px-2.5 py-1 rounded-lg border border-brand-500/40 font-semibold"
                   >
                     <span>🔊 Listen</span>
                   </button>
                 </div>
 
-                <h3 className="text-sm font-semibold text-white leading-relaxed mb-2">{currentQ.question}</h3>
+                <h3 className="text-base font-bold text-white leading-relaxed mb-2.5">{currentQ.question}</h3>
 
                 {currentQ.hint && (
                   <div>
                     <button
                       type="button"
                       onClick={() => setShowHint(!showHint)}
-                      className="text-[11px] text-brand-400 hover:underline flex items-center gap-1"
+                      className="text-[11px] text-brand-400 hover:underline flex items-center gap-1 font-semibold"
                     >
-                      <span>💡 {showHint ? "Hide Hint" : "Hint"}</span>
+                      <span>💡 {showHint ? "Hide Hint" : "Need a Hint?"}</span>
                     </button>
                     {showHint && (
-                      <p className="mt-1.5 p-2 rounded-lg bg-dark-900 text-[11px] text-brand-200 border border-brand-900/40">
+                      <p className="mt-2 p-2.5 rounded-xl bg-dark-950 text-[11px] text-brand-200 border border-brand-500/30">
                         {currentQ.hint}
                       </p>
                     )}
@@ -1153,12 +1158,12 @@ const InterviewPage = () => {
             </div>
 
             {/* Candidate Voice Answer Block */}
-            <div className="flex items-start gap-2.5 justify-end">
-              <div className="bg-dark-800 border border-brand-500/50 rounded-2xl rounded-tr-sm p-4 max-w-xl w-full text-xs space-y-3 shadow-xl">
+            <div className="flex items-start gap-3 justify-end">
+              <div className="bg-dark-900/90 border border-brand-500/50 rounded-2xl rounded-tr-sm p-5 max-w-xl w-full text-xs space-y-3 shadow-2xl">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-white">Your Spoken Answer</span>
-                    <span className="px-1.5 py-0.2 rounded text-[10px] bg-dark-900 text-gray-400 font-mono">
+                    <span className="font-bold text-white">Your Spoken Answer</span>
+                    <span className="px-2 py-0.5 rounded-md text-[10px] bg-dark-950 text-gray-400 font-mono border border-white/5">
                       {wordCount} words
                     </span>
                   </div>
@@ -1167,7 +1172,7 @@ const InterviewPage = () => {
                 </div>
 
                 {/* Spoken Text Box */}
-                <div className="min-h-20 p-3 rounded-xl bg-dark-900/90 border border-dark-700/80 text-gray-200 text-xs leading-relaxed font-sans relative">
+                <div className="min-h-24 p-3.5 rounded-xl bg-dark-950/90 border border-white/10 text-gray-200 text-xs leading-relaxed font-sans relative shadow-inner">
                   {currentAnswer ? (
                     <p className="whitespace-pre-wrap">{currentAnswer}</p>
                   ) : (
@@ -1175,7 +1180,7 @@ const InterviewPage = () => {
                       Click "Record Answer" and speak clearly into your microphone...
                     </span>
                   )}
-                  {interimText && <span className="text-brand-300 italic"> {interimText}...</span>}
+                  {interimText && <span className="text-cyan-300 italic font-medium"> {interimText}...</span>}
                 </div>
 
                 {/* Microphone Controls */}
@@ -1184,16 +1189,16 @@ const InterviewPage = () => {
                     <button
                       type="button"
                       onClick={toggleRecording}
-                      className={`px-3 py-1.5 rounded-xl font-semibold text-xs transition-colors flex items-center gap-1.5 ${
+                      className={`px-3.5 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 shadow-md ${
                         isRecording
-                          ? "bg-red-600 hover:bg-red-500 text-white animate-pulse"
-                          : "bg-brand-600 hover:bg-brand-500 text-white"
+                          ? "bg-rose-600 hover:bg-rose-500 text-white animate-pulse shadow-rose-600/30"
+                          : "bg-brand-600 hover:bg-brand-500 text-white shadow-brand-600/30"
                       }`}
                     >
                       {isRecording ? (
                         <>
                           <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                          <span>Stop ({recordingSeconds}s)</span>
+                          <span>Stop Recording ({recordingSeconds}s)</span>
                         </>
                       ) : (
                         <>
@@ -1207,7 +1212,7 @@ const InterviewPage = () => {
                       <button
                         type="button"
                         onClick={clearVoiceAnswer}
-                        className="px-2.5 py-1.5 rounded-xl text-xs font-medium bg-dark-700 hover:bg-dark-600 text-gray-300 border border-dark-600"
+                        className="px-3 py-2 rounded-xl text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-gray-200 border border-white/10"
                       >
                         🔄 Re-speak
                       </button>
@@ -1217,7 +1222,7 @@ const InterviewPage = () => {
                       <button
                         type="button"
                         onClick={playbackSpokenAnswer}
-                        className="px-2.5 py-1.5 rounded-xl text-xs font-medium bg-dark-700 hover:bg-dark-600 text-gray-300 border border-dark-600"
+                        className="px-3 py-2 rounded-xl text-xs font-semibold bg-dark-850 hover:bg-dark-800 text-gray-200 border border-white/10"
                       >
                         ▶️ Listen
                       </button>
@@ -1236,11 +1241,11 @@ const InterviewPage = () => {
                 </div>
 
                 {manualFallbackActive && (
-                  <div className="p-2.5 bg-dark-900 rounded-xl border border-dark-600 text-xs space-y-1.5">
+                  <div className="p-3 bg-dark-950 rounded-xl border border-white/10 text-xs space-y-2">
                     <input
                       type="text"
                       placeholder="Type what you spoke & press Enter..."
-                      className="input-field text-xs py-1"
+                      className="input-field text-xs py-1.5"
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && e.target.value.trim()) {
                           const val = e.target.value.trim();
@@ -1257,7 +1262,7 @@ const InterviewPage = () => {
                 )}
               </div>
 
-              <div className="w-8 h-8 rounded-lg bg-dark-700 border border-dark-500 flex items-center justify-center text-white text-xs shrink-0 font-bold">
+              <div className="w-8 h-8 rounded-xl bg-dark-950 border border-white/10 flex items-center justify-center text-white text-xs shrink-0 font-bold shadow-sm">
                 You
               </div>
             </div>
@@ -1268,11 +1273,11 @@ const InterviewPage = () => {
       </div>
 
       {/* Dock Bar */}
-      <div className="card bg-dark-800/95 border-dark-600 p-3 shadow-xl flex items-center justify-between gap-3 sticky bottom-3 z-40 backdrop-blur-md">
+      <div className="card bg-dark-900/90 border-white/[0.08] p-3.5 shadow-2xl flex items-center justify-between gap-3 sticky bottom-4 z-40 backdrop-blur-2xl">
         <button
           type="button"
           onClick={handleQuitInterview}
-          className="px-3 py-1.5 rounded-lg bg-red-950/50 hover:bg-red-900/60 border border-red-700/50 text-red-300 text-xs font-medium transition-colors"
+          className="px-3.5 py-2 rounded-xl bg-rose-950/70 hover:bg-rose-900 border border-rose-500/40 text-rose-200 text-xs font-semibold transition-colors shadow-sm"
         >
           🚪 Quit Interview
         </button>
@@ -1285,7 +1290,7 @@ const InterviewPage = () => {
                 if (isRecording) stopRecording();
                 setShowConfirmModal(true);
               }}
-              className="btn-primary text-xs py-2 px-5 flex items-center gap-1.5"
+              className="btn-primary text-xs py-2.5 px-6 flex items-center gap-2 shadow-lg shadow-brand-500/25"
             >
               <span>Next Question →</span>
             </button>
@@ -1297,9 +1302,9 @@ const InterviewPage = () => {
                 setShowConfirmModal(true);
               }}
               disabled={submitting}
-              className="btn-primary bg-emerald-600 hover:bg-emerald-500 text-xs py-2 px-5 flex items-center gap-1.5 disabled:opacity-50"
+              className="btn-primary bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs py-2.5 px-6 flex items-center gap-2 disabled:opacity-50 shadow-lg shadow-emerald-500/25"
             >
-              {submitting ? "Evaluating..." : `Submit Interview (${answeredCount}/${questions.length})`}
+              {submitting ? "Evaluating with RAG..." : `Submit Interview (${answeredCount}/${questions.length})`}
             </button>
           )}
         </div>
@@ -1307,37 +1312,37 @@ const InterviewPage = () => {
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="card max-w-md w-full bg-dark-800 border-dark-600 shadow-2xl p-5 relative animate-scale-up">
-            <div className="flex items-start gap-3 mb-3">
-              <span className="text-xl">⚠️</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="card max-w-md w-full bg-dark-900 border-white/10 shadow-2xl p-6 relative animate-scale-up">
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-2xl">⚠️</span>
               <div>
                 <h3 className="text-base font-bold text-white">
-                  {currentIdx < questions.length - 1 ? "Submit Answer?" : "Submit Interview?"}
+                  {currentIdx < questions.length - 1 ? "Submit Answer & Lock?" : "Submit Interview Evaluation?"}
                 </h3>
-                <p className="text-xs text-amber-300 mt-0.5">Answer locks after submission.</p>
+                <p className="text-xs text-amber-300 mt-0.5">Answer is permanently locked after submission.</p>
               </div>
             </div>
 
-            <div className="bg-dark-900/90 rounded-xl p-3 border border-dark-600 mb-4 text-xs space-y-2">
+            <div className="bg-dark-950/90 rounded-xl p-3.5 border border-white/10 mb-5 text-xs space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Transcript:</span>
-                <span className={isCurrentAnswered ? "text-emerald-400 font-semibold" : "text-red-400 font-semibold"}>
-                  {isCurrentAnswered ? `${wordCount} words` : "No voice answer"}
+                <span className="text-gray-400">Transcript Check:</span>
+                <span className={isCurrentAnswered ? "text-emerald-400 font-semibold" : "text-rose-400 font-semibold"}>
+                  {isCurrentAnswered ? `${wordCount} words recorded` : "No voice answer detected"}
                 </span>
               </div>
-              <div className="max-h-24 overflow-y-auto rounded bg-dark-950 p-2 text-gray-300 font-mono text-[11px] border border-dark-700">
-                {currentAnswer || <span className="text-red-400 italic">No answer spoken yet.</span>}
+              <div className="max-h-24 overflow-y-auto rounded-lg bg-dark-900 p-2.5 text-gray-200 font-mono text-[11px] border border-white/5">
+                {currentAnswer || <span className="text-rose-400 italic">No answer spoken yet.</span>}
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2">
+            <div className="flex items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setShowConfirmModal(false)}
-                className="btn-secondary text-xs py-1.5 px-3"
+                className="btn-secondary text-xs py-2 px-4"
               >
-                Review
+                Review Answer
               </button>
               <button
                 type="button"
@@ -1349,7 +1354,7 @@ const InterviewPage = () => {
                     handleSubmit();
                   }
                 }}
-                className={`btn-primary text-xs py-1.5 px-4 ${
+                className={`btn-primary text-xs py-2 px-5 ${
                   currentIdx === questions.length - 1 ? "bg-emerald-600 hover:bg-emerald-500" : ""
                 }`}
               >
@@ -1362,27 +1367,27 @@ const InterviewPage = () => {
 
       {/* Voice Selection Modal */}
       {showVoiceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="card max-w-md w-full bg-dark-800 border-dark-600 shadow-2xl p-5 relative animate-scale-up">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b border-dark-700">
-              <div className="flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="card max-w-md w-full bg-dark-900 border-white/10 shadow-2xl p-6 relative animate-scale-up">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2.5">
                 <span className="text-lg">🎙️</span>
                 <h3 className="text-base font-bold text-white">Change AI Voice</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowVoiceModal(false)}
-                className="p-1 rounded-lg hover:bg-dark-700 text-gray-400 hover:text-white"
+                className="p-1 rounded-lg hover:bg-dark-800 text-gray-400 hover:text-white"
               >
                 ✕
               </button>
             </div>
 
             <p className="text-xs text-gray-400 mb-3">
-              Select another voice for the interviewer bot:
+              Select another natural voice for the interviewer bot:
             </p>
 
-            <div className="max-h-60 overflow-y-auto space-y-1.5 pr-1 mb-4">
+            <div className="max-h-60 overflow-y-auto space-y-2 pr-1 mb-5">
               {availableVoices.map((v) => {
                 const isSelected = v.voiceURI === selectedVoiceURI;
                 return (
@@ -1390,17 +1395,17 @@ const InterviewPage = () => {
                     key={v.voiceURI}
                     type="button"
                     onClick={() => handleSelectVoice(v.voiceURI)}
-                    className={`w-full text-left p-2.5 rounded-xl text-xs flex items-center justify-between transition-colors border ${
+                    className={`w-full text-left p-3 rounded-xl text-xs flex items-center justify-between transition-all border ${
                       isSelected
-                        ? "bg-brand-900/50 border-brand-500 text-white font-semibold"
-                        : "bg-dark-900/70 border-dark-700/80 text-gray-300 hover:bg-dark-700 hover:text-white"
+                        ? "bg-brand-950/80 border-brand-500 text-white font-semibold shadow-glow"
+                        : "bg-dark-950/70 border-white/[0.06] text-gray-300 hover:bg-dark-850 hover:text-white"
                     }`}
                   >
                     <div className="truncate pr-2">
-                      <p className="truncate font-medium">{v.name}</p>
-                      <p className="text-[10px] text-gray-500 font-mono">{v.lang}</p>
+                      <p className="truncate font-semibold text-white">{v.name}</p>
+                      <p className="text-[10px] text-gray-400 font-mono mt-0.5">{v.lang}</p>
                     </div>
-                    {isSelected && <span className="text-brand-400 text-sm">✓</span>}
+                    {isSelected && <span className="text-cyan-400 text-base font-bold">✓</span>}
                   </button>
                 );
               })}
@@ -1410,7 +1415,7 @@ const InterviewPage = () => {
               <button
                 type="button"
                 onClick={() => setShowVoiceModal(false)}
-                className="btn-primary text-xs py-2 px-4"
+                className="btn-primary text-xs py-2 px-5"
               >
                 Done
               </button>
