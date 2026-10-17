@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+    <linearGradient id="helmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="40%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#312e81" />
+    </linearGradient>
+    <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.2" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="deepGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16" result="blur2" />
+      <feComposite in="SourceGraphic" in2="blur2" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Base Circle with Outline -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  <rect width="504" height="504" x="4" y="4" rx="124" fill="none" stroke="#6366f1" stroke-width="3" stroke-opacity="0.35" />
+
+  <!-- Outer Pulse Aura -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#06b6d4" stroke-width="2" stroke-opacity="0.2" stroke-dasharray="10 6" />
+  <circle cx="256" cy="256" r="185" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.3" />
+
+  <!-- Robot Head / Helmet Base -->
+  <path d="M 160 210 C 160 140, 200 110, 256 110 C 312 110, 352 140, 352 210 L 352 300 C 352 355, 315 385, 256 385 C 197 385, 160 355, 160 300 Z" fill="url(#helmGrad)" />
+
+  <!-- Helmet Highlight Ridge -->
+  <path d="M 185 180 C 195 135, 225 125, 256 125 C 287 125, 317 135, 327 180" fill="none" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+
+  <!-- Inner Face Screen Area -->
+  <rect x="180" y="195" width="152" height="150" rx="36" fill="url(#faceGrad)" stroke="#334155" stroke-width="3" />
+
+  <!-- Visor / Eye Display Shield -->
+  <rect x="194" y="222" width="124" height="58" rx="20" fill="#030712" stroke="#1e293b" stroke-width="2" />
+
+  <!-- Glowing Robot Eyes (Visor) -->
+  <g filter="url(#softGlow)">
+    <!-- Left Eye Visor Bar -->
+    <rect x="210" y="240" width="34" height="20" rx="10" fill="#38bdf8" />
+    <circle cx="227" cy="250" r="4" fill="#ffffff" />
+
+    <!-- Right Eye Visor Bar -->
+    <rect x="268" y="240" width="34" height="20" rx="10" fill="#38bdf8" />
+    <circle cx="285" cy="250" r="4" fill="#ffffff" />
+  </g>
+
+  <!-- Cheerful Smile LED Matrix -->
+  <path d="M 232 305 Q 256 322 280 305" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" filter="url(#softGlow)" />
+  <circle cx="225" cy="301" r="2" fill="#38bdf8" opacity="0.7" />
+  <circle cx="287" cy="301" r="2" fill="#38bdf8" opacity="0.7" />
+
+  <!-- Headset - Left Earcup -->
+  <rect x="134" y="220" width="32" height="74" rx="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="3" />
+  <rect x="142" y="234" width="16" height="46" rx="8" fill="#4f46e5" />
+  <!-- Left Sound Waves -->
+  <path d="M 118 240 Q 110 257 118 274" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  <path d="M 104 230 Q 92 257 104 284" fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round" opacity="0.5" />
+
+  <!-- Headset - Right Earcup -->
+  <rect x="346" y="220" width="32" height="74" rx="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="3" />
+  <rect x="354" y="234" width="16" height="46" rx="8" fill="#4f46e5" />
+  <!-- Right Sound Waves -->
+  <path d="M 394 240 Q 402 257 394 274" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  <path d="M 408 230 Q 420 257 408 284" fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round" opacity="0.5" />
+
+  <!-- Headset Band Over Top -->
+  <path d="M 150 226 C 150 115, 362 115, 362 226" fill="none" stroke="#312e81" stroke-width="14" stroke-linecap="round" />
+  <path d="M 152 226 C 152 120, 360 120, 360 226" fill="none" stroke="#818cf8" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+
+  <!-- Headset Microphone Boom Arm -->
+  <path d="M 358 270 Q 370 345 304 362" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="round" />
+  <!-- Mic Capsule with LED -->
+  <rect x="286" y="352" width="26" height="18" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="2" />
+  <circle cx="295" cy="361" r="3.5" fill="#38bdf8" filter="url(#softGlow)" />
+
+  <!-- Collar / Shoulders -->
+  <path d="M 155 425 C 190 395, 322 395, 357 425 L 380 475 C 380 495, 132 495, 132 475 Z" fill="#1e1b4b" stroke="#312e81" stroke-width="3" />
+  <path d="M 220 420 L 256 445 L 292 420" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" />
+  <!-- Core AI Power Badge on Chest -->
+  <circle cx="256" cy="445" r="9" fill="#06b6d4" filter="url(#softGlow)" />
+  <circle cx="256" cy="445" r="4" fill="#ffffff" />
+
+  <!-- Tech Status Dots -->
+  <circle cx="256" cy="92" r="5" fill="#38bdf8" filter="url(#softGlow)" />
+  <line x1="256" y1="97" x2="256" y2="110" stroke="#38bdf8" stroke-width="2" />
+</svg>

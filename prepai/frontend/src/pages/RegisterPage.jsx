@@ -49,8 +49,8 @@ const RegisterPage = () => {
             </div>
             <span className="font-display font-bold text-2xl text-white">Prep<span className="text-brand-400">AI</span></span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Start for free</h1>
-          <p className="text-gray-400">Create your account and ace your next interview</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
+          <p className="text-gray-400 text-xs">Join PrepAI</p>
         </div>
 
         <div className="card shadow-xl shadow-black/30">

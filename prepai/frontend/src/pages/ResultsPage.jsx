@@ -3,23 +3,23 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const ScoreGauge = ({ percentage }) => {
   const color =
-    percentage >= 70 ? "#34d399" :
-    percentage >= 40 ? "#facc15" :
-    "#f87171";
+    percentage >= 70 ? "#34d399" : percentage >= 40 ? "#facc15" : "#f87171";
 
   const label =
-    percentage >= 70 ? "Excellent Performance!" :
-    percentage >= 40 ? "Good Effort" :
-    "Needs Further Practice";
+    percentage >= 70 ? "Excellent" : percentage >= 40 ? "Good" : "Needs Practice";
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="relative w-32 h-32">
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative w-28 h-28">
         <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="50" fill="none" stroke="#1a1a24" strokeWidth="10" />
           <circle
-            cx="60" cy="60" r="50" fill="none"
-            stroke={color} strokeWidth="10"
+            cx="60"
+            cy="60"
+            r="50"
+            fill="none"
+            stroke={color}
+            strokeWidth="10"
             strokeDasharray={`${2 * Math.PI * 50}`}
             strokeDashoffset={`${2 * Math.PI * 50 * (1 - percentage / 100)}`}
             strokeLinecap="round"
@@ -27,10 +27,14 @@ const ScoreGauge = ({ percentage }) => {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-bold font-display" style={{ color }}>{percentage}%</span>
+          <span className="text-2xl font-bold font-display" style={{ color }}>
+            {percentage}%
+          </span>
         </div>
       </div>
-      <span className="text-sm font-semibold" style={{ color }}>{label}</span>
+      <span className="text-xs font-semibold" style={{ color }}>
+        {label}
+      </span>
     </div>
   );
 };
@@ -43,9 +47,11 @@ const ResultsPage = () => {
   if (!state?.result) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="card text-center max-w-sm">
-          <p className="text-gray-300 mb-4">No results found. Please complete an interview first.</p>
-          <Link to="/interview" className="btn-primary inline-block">Start Interview</Link>
+        <div className="card text-center max-w-xs">
+          <p className="text-gray-300 text-sm mb-3">No results found.</p>
+          <Link to="/interview" className="btn-primary inline-block text-xs py-2 px-4">
+            Start Interview
+          </Link>
         </div>
       </div>
     );
@@ -54,108 +60,89 @@ const ResultsPage = () => {
   const { score, totalQuestions, percentage, answers } = state.result;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="text-center mb-8 animate-slide-up">
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-brand-900/40 text-brand-300 border border-brand-700/50 text-xs font-semibold mb-3">
-          <span>⚡ SOA Decoupled Architecture</span>
-          <span className="text-gray-500">•</span>
-          <span>Verified RAG Grounding (-35% Hallucinations)</span>
-          <span className="text-gray-500">•</span>
-          <span>Redis MD5 Caching (-45% Compute Overhead)</span>
-        </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Interview Evaluation</h1>
-        <p className="text-gray-400">Strict technical grading grounded against verified knowledge base specifications.</p>
+      <div className="text-center mb-6 animate-slide-up">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-1">Interview Results</h1>
+        <p className="text-xs text-gray-400">RAG Grounded Evaluation</p>
       </div>
 
-      {/* Architecture Highlights Pill Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
-        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-emerald-950/60 border border-emerald-700/40 flex items-center justify-center text-emerald-400 text-sm font-bold">
-            RAG
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-white">Verified Knowledge Base</p>
-            <p className="text-[11px] text-emerald-400">35% hallucination cut via Gemini grounding</p>
-          </div>
+      {/* Metrics Bar */}
+      <div className="grid grid-cols-3 gap-2.5 mb-6 text-center">
+        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-2.5">
+          <span className="text-xs font-bold text-emerald-400 font-mono">-35%</span>
+          <p className="text-[11px] font-semibold text-white mt-0.5">RAG Grounding</p>
         </div>
 
-        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-brand-950/60 border border-brand-700/40 flex items-center justify-center text-brand-400 text-sm font-bold">
-            MD5
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-white">Distributed Redis Caching</p>
-            <p className="text-[11px] text-brand-400">45% compute & latency overhead reduction</p>
-          </div>
+        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-2.5">
+          <span className="text-xs font-bold text-brand-400 font-mono">-45%</span>
+          <p className="text-[11px] font-semibold text-white mt-0.5">Redis Cache</p>
         </div>
 
-        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-purple-950/60 border border-purple-700/40 flex items-center justify-center text-purple-400 text-sm font-bold">
-            SOA
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-white">SOLID Separation</p>
-            <p className="text-[11px] text-purple-300">Auth, Orchestration & Evaluation decoupled</p>
-          </div>
+        <div className="bg-dark-800/90 border border-dark-600 rounded-xl p-2.5">
+          <span className="text-xs font-bold text-purple-400 font-mono">-30%</span>
+          <p className="text-[11px] font-semibold text-white mt-0.5">SOA Decoupled</p>
         </div>
       </div>
 
-      {/* Score card */}
-      <div className="card mb-8 text-center bg-gradient-to-br from-dark-800 to-dark-700 shadow-xl shadow-black/30 animate-fade-in">
+      {/* Score Card */}
+      <div className="card mb-6 text-center bg-gradient-to-br from-dark-800 to-dark-700 shadow-xl py-6 animate-fade-in">
         <ScoreGauge percentage={percentage} />
-        <div className="mt-6 grid grid-cols-3 gap-4">
-          <div className="bg-dark-700/60 rounded-xl p-4">
-            <p className="text-2xl font-bold text-white font-display">{score}</p>
-            <p className="text-xs text-gray-400 mt-1">Passed (≥70%)</p>
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="bg-dark-700/60 rounded-xl p-3">
+            <p className="text-xl font-bold text-white font-display">{score}</p>
+            <p className="text-[11px] text-gray-400">Passed</p>
           </div>
-          <div className="bg-dark-700/60 rounded-xl p-4">
-            <p className="text-2xl font-bold text-white font-display">{totalQuestions - score}</p>
-            <p className="text-xs text-gray-400 mt-1">Needs Work</p>
+          <div className="bg-dark-700/60 rounded-xl p-3">
+            <p className="text-xl font-bold text-white font-display">{totalQuestions - score}</p>
+            <p className="text-[11px] text-gray-400">Review</p>
           </div>
-          <div className="bg-dark-700/60 rounded-xl p-4">
-            <p className="text-2xl font-bold text-white font-display">{totalQuestions}</p>
-            <p className="text-xs text-gray-400 mt-1">Total Questions</p>
+          <div className="bg-dark-700/60 rounded-xl p-3">
+            <p className="text-xl font-bold text-white font-display">{totalQuestions}</p>
+            <p className="text-[11px] text-gray-400">Total</p>
           </div>
         </div>
       </div>
 
-      {/* Per-question breakdown */}
-      <h2 className="text-xl font-bold text-white mb-4">Detailed Question Breakdown</h2>
-      <div className="space-y-4 mb-10">
+      {/* Per-Question Breakdown */}
+      <h2 className="text-base font-bold text-white mb-3">Question Breakdown</h2>
+      <div className="space-y-3 mb-8">
         {(answers || []).map((ans, idx) => (
           <div
             key={idx}
-            className={`card border transition-colors cursor-pointer ${
-              ans.isCorrect ? "border-emerald-700/30 hover:border-emerald-600/50" : "border-red-700/30 hover:border-red-600/50"
+            className={`card border transition-colors cursor-pointer p-4 ${
+              ans.isCorrect
+                ? "border-emerald-700/30 hover:border-emerald-600/50"
+                : "border-red-700/30 hover:border-red-600/50"
             }`}
             onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3 flex-1 min-w-0">
-                <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center mt-0.5 ${ans.isCorrect ? "bg-emerald-900/50 text-emerald-400" : "bg-red-900/50 text-red-400"}`}>
-                  {ans.isCorrect
-                    ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.5 12.75l6 6 9-13.5" /></svg>
-                    : <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
-                  }
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                <div
+                  className={`w-6 h-6 rounded-full shrink-0 flex items-center justify-center mt-0.5 text-xs ${
+                    ans.isCorrect ? "bg-emerald-900/50 text-emerald-400" : "bg-red-900/50 text-red-400"
+                  }`}
+                >
+                  {ans.isCorrect ? "✓" : "✕"}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white leading-snug">{ans.questionText}</p>
-                  <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                    <span className="text-xs text-gray-500 font-mono">Q{idx + 1}</span>
-                    {ans.grade && <span className="text-xs font-bold text-brand-400 font-mono">[{ans.grade}]</span>}
+                  <p className="text-xs font-medium text-white leading-snug">{ans.questionText}</p>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
+                    <span className="text-gray-500 font-mono">Q{idx + 1}</span>
+                    {ans.grade && <span className="font-bold text-brand-400 font-mono">[{ans.grade}]</span>}
                     {ans.ragContextUsed && (
-                      <span className="text-[11px] text-gray-300 bg-dark-700 px-2 py-0.5 rounded border border-dark-600">
-                        📚 RAG: {ans.ragContextUsed}
+                      <span className="text-gray-300 bg-dark-700 px-1.5 py-0.5 rounded border border-dark-600">
+                        RAG: {ans.ragContextUsed}
                       </span>
                     )}
                     {ans.cached ? (
-                      <span className="text-[11px] text-brand-300 bg-brand-950/60 px-2 py-0.5 rounded border border-brand-700/40">
-                        ⚡ Redis Cache Hit (MD5 Hash Keyed)
+                      <span className="text-brand-300 bg-brand-950/60 px-1.5 py-0.5 rounded border border-brand-700/40">
+                        ⚡ Redis Hit
                       </span>
                     ) : (
-                      <span className="text-[11px] text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-700/40">
-                        ✨ Live Evaluated (Gemini Grounded)
+                      <span className="text-emerald-300 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-700/40">
+                        ✨ Live RAG
                       </span>
                     )}
                   </div>
@@ -163,45 +150,34 @@ const ResultsPage = () => {
               </div>
               <div className="text-right shrink-0">
                 <span className={ans.isCorrect ? "badge-green" : "badge-red"}>
-                  {ans.score}% Score
+                  {ans.score}%
                 </span>
               </div>
             </div>
 
             {expandedIdx === idx && (
-              <div className="mt-4 pt-4 border-t border-dark-500 space-y-4 animate-fade-in" onClick={(e) => e.stopPropagation()}>
-                {/* Anti-Hallucination & Grounding Metric */}
-                <div className="bg-dark-900/90 rounded-xl p-3 border border-dark-600 text-xs flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-emerald-400 font-semibold">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-                    <span>Anti-Hallucination Guardrail: Verified Grounding (-35% Hallucination Cut)</span>
-                  </div>
-                  <span className="text-gray-400 font-mono text-[11px]">
-                    Grounding Confidence: {ans.groundingConfidence || "95%"}
-                  </span>
-                </div>
-
+              <div
+                className="mt-3 pt-3 border-t border-dark-500 space-y-3 animate-fade-in text-xs"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Your Submitted Response</p>
-                  <p className="text-sm text-gray-300 leading-relaxed bg-dark-700 rounded-xl px-4 py-3 border border-dark-500 font-mono text-xs">
-                    {ans.userAnswer?.trim() || <span className="text-gray-500 italic">No response provided</span>}
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Your Spoken Answer</p>
+                  <p className="text-gray-300 bg-dark-700 rounded-lg p-2.5 border border-dark-500 font-mono text-xs">
+                    {ans.userAnswer?.trim() || <span className="text-gray-500 italic">No answer spoken</span>}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs font-semibold text-brand-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
-                    Source-of-Truth RAG Feedback
-                  </p>
-                  <p className="text-sm text-gray-200 leading-relaxed bg-brand-950/40 rounded-xl px-4 py-3 border border-brand-800/40">
+                  <p className="text-[11px] font-semibold text-brand-400 uppercase tracking-wide mb-1">RAG Feedback</p>
+                  <p className="text-gray-200 bg-brand-950/40 rounded-lg p-2.5 border border-brand-800/40">
                     {ans.feedback}
                   </p>
                 </div>
 
                 {ans.keyStrengths && ans.keyStrengths.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wide mb-1.5">Key Strengths Identified</p>
-                    <ul className="list-disc list-inside text-xs text-emerald-300 space-y-1">
+                    <p className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wide mb-1">Strengths</p>
+                    <ul className="list-disc list-inside text-emerald-300 space-y-0.5">
                       {ans.keyStrengths.map((st, i) => (
                         <li key={i}>{st}</li>
                       ))}
@@ -211,8 +187,8 @@ const ResultsPage = () => {
 
                 {ans.missingConcepts && ans.missingConcepts.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-yellow-400 uppercase tracking-wide mb-1.5">Concepts To Include Next Time</p>
-                    <ul className="list-disc list-inside text-xs text-yellow-300 space-y-1">
+                    <p className="text-[11px] font-semibold text-yellow-400 uppercase tracking-wide mb-1">Improvements</p>
+                    <ul className="list-disc list-inside text-yellow-300 space-y-0.5">
                       {ans.missingConcepts.map((mc, i) => (
                         <li key={i}>{mc}</li>
                       ))}
@@ -222,8 +198,8 @@ const ResultsPage = () => {
 
                 {ans.modelAnswer && (
                   <div>
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Verified Standard Definition (Ground Truth)</p>
-                    <p className="text-xs text-gray-300 bg-dark-900/80 p-3 rounded-lg border border-dark-600 leading-relaxed">
+                    <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-1">Ground Truth</p>
+                    <p className="text-gray-300 bg-dark-900 p-2.5 rounded-lg border border-dark-600">
                       {ans.modelAnswer}
                     </p>
                   </div>
@@ -235,12 +211,15 @@ const ResultsPage = () => {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <button onClick={() => navigate("/interview")} className="btn-primary flex-1 text-center">
-          Practice Another Interview
+      <div className="flex gap-3">
+        <button
+          onClick={() => navigate("/interview")}
+          className="btn-primary flex-1 text-center text-xs py-2.5"
+        >
+          New Interview
         </button>
-        <Link to="/dashboard" className="btn-secondary flex-1 text-center">
-          Back to Dashboard
+        <Link to="/dashboard" className="btn-secondary flex-1 text-center text-xs py-2.5">
+          Dashboard
         </Link>
       </div>
     </div>

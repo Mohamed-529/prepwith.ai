@@ -112,15 +112,15 @@ const LoginPage = () => {
               }}
               className="w-full py-2.5 px-4 rounded-xl border border-dashed border-dark-500 hover:border-brand-500/50 bg-dark-700/50 hover:bg-dark-700 text-xs text-gray-300 font-medium transition-colors flex items-center justify-center gap-2"
             >
-              <span>⚡ Use Demo Credentials</span>
-              <span className="text-gray-500 font-mono">(demo@prepai.ai / password123)</span>
+              <span>⚡ Demo Account</span>
+              <span className="text-gray-500 font-mono">(demo@prepai.ai)</span>
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-400 mt-6">
-            Don't have an account?{" "}
+          <p className="text-center text-xs text-gray-400 mt-5">
+            No account?{" "}
             <Link to="/register" className="text-brand-400 hover:text-brand-300 font-medium">
-              Create one free
+              Register
             </Link>
           </p>
         </div>

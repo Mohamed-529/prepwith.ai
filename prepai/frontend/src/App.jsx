@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { InterviewLockProvider } from "./context/InterviewLockContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LandingPage    from "./pages/LandingPage";
@@ -73,7 +74,9 @@ const AppRoutes = () => {
 
 const App = () => (
   <AuthProvider>
-    <AppRoutes />
+    <InterviewLockProvider>
+      <AppRoutes />
+    </InterviewLockProvider>
   </AuthProvider>
 );
 
